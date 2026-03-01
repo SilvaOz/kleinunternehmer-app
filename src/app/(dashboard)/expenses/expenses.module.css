@@ -1,0 +1,217 @@
+/* ── Shared layout ── */
+.wrap { display: flex; flex-direction: column; gap: 16px; }
+
+.pageLabel {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'DM Mono', monospace;
+}
+.pageLabel::after { content: ''; flex: 1; height: 1px; background: #222230; }
+
+.card {
+  background: #111118;
+  border: 1px solid #1e1e2a;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #1a1a24;
+}
+.cardTitle {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: 'DM Serif Display', Georgia, serif;
+  color: #fff;
+  margin: 0;
+}
+.cardActions { display: flex; align-items: center; gap: 10px; }
+.searchWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0d0d12;
+  border: 1px solid #2a2a36;
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+.searchIcon { font-size: 14px; }
+.searchInput {
+  background: none;
+  border: none;
+  outline: none;
+  color: #ccc;
+  font-size: 13px;
+  width: 180px;
+}
+.searchInput::placeholder { color: #555; }
+.btnPrimary {
+  padding: 9px 18px;
+  border-radius: 8px;
+  background: #c8f04a;
+  color: #111;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.15s;
+}
+.btnPrimary:hover { background: #d6f560; transform: translateY(-1px); }
+.btnPrimary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btnCancel {
+  padding: 9px 18px;
+  border-radius: 8px;
+  background: none;
+  border: 1px solid #2e2e3c;
+  color: #888;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btnCancel:hover { border-color: #555; color: #ccc; }
+
+/* ── Inline form ── */
+.newForm {
+  border-bottom: 1px solid #1a1a24;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #0f0f15;
+}
+.newFormTitle { font-size: 15px; font-weight: 600; color: #e6e6e6; }
+.formError {
+  font-size: 12px;
+  color: #f0215d;
+  background: #2a1018;
+  border: 1px solid #3a1020;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.formRow { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.formRow2 { display: flex; gap: 12px; }
+.formLabel {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+}
+.formInput {
+  background: #111118;
+  border: 1px solid #2a2a36;
+  border-radius: 7px;
+  padding: 9px 12px;
+  color: #e6e6e6;
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.formInput:focus { border-color: #c8f04a; }
+.formActions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ── Expense grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  padding: 20px 24px;
+}
+
+.expenseCard {
+  background: #16161f;
+  border: 1px solid #1e1e2a;
+  border-left: 3px solid #666;
+  border-radius: 10px;
+  padding: 16px;
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+  cursor: default;
+}
+.expenseCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  border-color: #2a2a3a;
+}
+
+.expCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.expCategory {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'DM Mono', monospace;
+  font-weight: 600;
+}
+.expAmount {
+  font-size: 16px;
+  font-weight: 800;
+  color: #e6e6e6;
+  white-space: nowrap;
+}
+.expName {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e6e6e6;
+  margin-bottom: 3px;
+}
+.expVendor {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 12px;
+}
+.expFooter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.expDate {
+  font-size: 12px;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+}
+.expBadge {
+  font-size: 11px;
+  color: #c8f04a;
+  background: #1a2210;
+  border: 1px solid #2a3a14;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-family: 'DM Mono', monospace;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #444;
+  padding: 40px;
+  font-size: 13px;
+}
+
+/* ── Skeleton ── */
+.skeleton {
+  background: linear-gradient(90deg, #1a1a22 25%, #22222e 50%, #1a1a22 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 10px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe:*)",
+      "Bash(\"C:\\\\Users\\\\oscar\\\\Desktop\\\\proyectos\\\\2026\\\\kleinunternehmer-app\\\\scripts\\\\debug_invoice.ps1\":*)",
+      "Bash(curl:*)",
+      "Bash(\"C:\\\\Users\\\\oscar\\\\Desktop\\\\proyectos\\\\2026\\\\kleinunternehmer-app\\\\scripts\\\\debug_after_issue.ps1\":*)",
+      "Bash(npm install:*)",
+      "Bash(npm info:*)",
+      "Bash(ls C:\\\\Users\\\\oscar\\\\Desktop\\\\proyectos\\\\2026\\\\kleinunternehmer-app\\\\src\\\\app\\\\\\(auth\\):*)"
+    ]
+  }
+}

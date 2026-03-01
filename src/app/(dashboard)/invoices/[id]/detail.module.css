@@ -1,0 +1,313 @@
+/* ── Layout ── */
+.wrap { display: flex; flex-direction: column; gap: 16px; }
+
+.pageLabel {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'DM Mono', monospace;
+}
+.pageLabel::after { content: ''; flex: 1; height: 1px; background: #222230; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+  align-items: start;
+}
+
+/* ── Main card ── */
+.mainCard {
+  background: #111118;
+  border: 1px solid #1e1e2a;
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Invoice header ── */
+.invHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #1a1a24;
+}
+.invLabel {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.06em;
+}
+.invNumber {
+  font-size: 26px;
+  font-weight: 800;
+  color: #fff;
+  font-family: 'DM Serif Display', Georgia, serif;
+}
+.invHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.statusBadge {
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-weight: 600;
+}
+.btnIcon {
+  padding: 6px 12px;
+  border-radius: 7px;
+  background: #1e1e2a;
+  border: 1px solid #2a2a36;
+  color: #ccc;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.btnIcon:hover { border-color: #555; }
+.btnStorno {
+  padding: 6px 12px;
+  border-radius: 7px;
+  background: transparent;
+  border: 1px solid #5a1020;
+  color: #f0215d;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btnStorno:hover { background: #2a1018; }
+.btnStorno:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Dates row ── */
+.datesRow {
+  display: flex;
+  gap: 32px;
+  background: #0d0d12;
+  border: 1px solid #1a1a24;
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+.dateField { display: flex; flex-direction: column; gap: 4px; }
+.dateLabel {
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+}
+.dateValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e6e6e6;
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Recipient ── */
+.recipientBox {
+  background: #0d0d12;
+  border: 1px solid #1a1a24;
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+.recipientLabel {
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 8px;
+}
+.recipientName {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e6e6e6;
+  margin-bottom: 4px;
+}
+.recipientAddr {
+  font-size: 13px;
+  color: #666;
+}
+
+/* ── Items table ── */
+.itemsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.itemsTable th {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #444;
+  padding: 8px 0;
+  border-bottom: 1px solid #1a1a24;
+  font-weight: 500;
+}
+.itemsTable td {
+  padding: 12px 0;
+  font-size: 13px;
+  color: #ccc;
+  border-bottom: 1px solid #181820;
+}
+.itemsTable tbody tr:last-child td { border-bottom: none; }
+
+/* ── Totals ── */
+.totals {
+  border-top: 1px solid #1a1a24;
+  padding-top: 16px;
+}
+.totalLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #666;
+  padding: 5px 0;
+}
+.totalFinal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px solid #2a2a36;
+  font-size: 16px;
+  font-weight: 800;
+  color: #e6e6e6;
+}
+.totalFinalValue {
+  color: #c8f04a;
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+}
+
+/* ── §19 note ── */
+.kleinNote {
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+  background: #0d0d12;
+  border: 1px solid #1a1a24;
+  border-radius: 8px;
+  padding: 12px 16px;
+  line-height: 1.5;
+}
+
+/* ── Side column ── */
+.sideCol { display: flex; flex-direction: column; gap: 12px; }
+
+.sideCard {
+  background: #111118;
+  border: 1px solid #1e1e2a;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sideCardLabel {
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 4px;
+}
+
+/* ── Action buttons ── */
+.actionBtn {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 8px;
+  background: #16161f;
+  border: 1px solid #2a2a36;
+  color: #ccc;
+  font-size: 13px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.actionBtn:hover { background: #1c1c28; border-color: #3a3a50; }
+.actionBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.actionBtnDanger {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid #5a1020;
+  color: #f0215d;
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.actionBtnDanger:hover { background: #2a1018; }
+.actionBtnDanger:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Timeline ── */
+.timeline { display: flex; flex-direction: column; gap: 14px; }
+.timelineItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.timelineDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.timelineLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e6e6e6;
+  margin-bottom: 2px;
+}
+.timelineDate {
+  font-size: 11px;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Error / misc ── */
+.formError {
+  font-size: 12px;
+  color: #f0215d;
+  background: #2a1018;
+  border: 1px solid #3a1020;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.errorBox {
+  background: #2a1018;
+  border: 1px solid #3a1020;
+  border-radius: 8px;
+  padding: 20px;
+  color: #f0215d;
+  font-size: 14px;
+}
+
+/* ── Skeleton ── */
+.skeleton {
+  background: linear-gradient(90deg, #1a1a22 25%, #22222e 50%, #1a1a22 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 12px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

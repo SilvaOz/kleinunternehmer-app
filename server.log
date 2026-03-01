@@ -1,0 +1,1041 @@
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+   ▲ Next.js 15.5.12
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.178.20:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 13.3s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 627ms (195 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 6.2s (658 modules)
+ GET / 200 in 7574ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 550ms (409 modules)
+ ✓ Compiled in 431ms (249 modules)
+ GET /favicon.ico 200 in 12869ms
+ GET / 200 in 173ms
+ GET /api/reports/summary?year=2025 200 in 13537ms
+ GET /api/reports/summary?year=2026 200 in 13565ms
+ GET /api/invoices 200 in 13600ms
+ GET /api/invoices?status=issued 200 in 13635ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 877ms (769 modules)
+ GET /invoices/new 404 in 1132ms
+ GET /invoices/new 404 in 221ms
+ GET / 200 in 335ms
+ GET /api/invoices 200 in 196ms
+ GET /api/invoices?status=issued 200 in 203ms
+ GET /api/reports/summary?year=2026 200 in 234ms
+ GET /api/reports/summary?year=2025 200 in 249ms
+ ✓ Compiled in 752ms (650 modules)
+ GET / 200 in 335ms
+ ✓ Compiled in 429ms (650 modules)
+ GET / 200 in 193ms
+ ✓ Compiled in 332ms (650 modules)
+ GET / 200 in 147ms
+ ✓ Compiled in 313ms (650 modules)
+ GET / 200 in 115ms
+ ✓ Compiled in 413ms (650 modules)
+ GET / 200 in 120ms
+ ✓ Compiled in 379ms (650 modules)
+ GET / 200 in 131ms
+ ✓ Compiled in 350ms (650 modules)
+ GET / 200 in 115ms
+ ✓ Compiled in 981ms (641 modules)
+ GET / 200 in 274ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 617ms (522 modules)
+ GET /api/invoices?status=issued 200 in 944ms
+ ✓ Compiled in 397ms (780 modules)
+ GET / 200 in 307ms
+ GET /api/invoices?status=issued 200 in 304ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 675ms (632 modules)
+ GET /invoices/new 404 in 983ms
+ GET /invoices/new 404 in 223ms
+ GET / 200 in 181ms
+ ✓ Compiled /api/reports/summary in 192ms (523 modules)
+ ✓ Compiled (528 modules)
+ GET /api/invoices 200 in 1140ms
+ GET /api/invoices?status=issued 200 in 1146ms
+ GET /api/reports/summary?year=2025 200 in 1214ms
+ GET /api/reports/summary?year=2026 200 in 1217ms
+ GET /api/invoices?status=issued 200 in 53ms
+ ✓ Compiled in 1181ms (822 modules)
+ GET / 200 in 1037ms
+ GET / 200 in 57ms
+ ✓ Compiled in 151ms (249 modules)
+ GET / 200 in 125ms
+ ✓ Compiled in 412ms (822 modules)
+ GET / 200 in 493ms
+ GET / 200 in 45ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 752ms (632 modules)
+ GET /invoices 404 in 1027ms
+ GET /invoices 404 in 207ms
+ GET / 200 in 270ms
+ ○ Compiling /api/reports/summary ...
+ ✓ Compiled /api/reports/summary in 780ms (523 modules)
+ ✓ Compiled (528 modules)
+ GET /api/invoices 200 in 1634ms
+ GET /api/invoices?status=issued 200 in 1639ms
+ GET /api/reports/summary?year=2026 200 in 1714ms
+ GET /api/reports/summary?year=2025 200 in 1717ms
+ ○ Compiling /clients ...
+ ⨯ ./src/app/(dashboard)/clients/page.tsx:3:1
+Module not found: Can't resolve './clients.module.css'
+  1 | "use client";
+  2 | import { useState, useEffect, useRef } from "react";
+> 3 | import styles from "./clients.module.css";
+    | ^
+  4 |
+  5 | const fmt = (n: number) =>
+  6 |   new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n);
+
+https://nextjs.org/docs/messages/module-not-found
+ ⨯ ./src/app/(dashboard)/clients/page.tsx:3:1
+Module not found: Can't resolve './clients.module.css'
+  1 | "use client";
+  2 | import { useState, useEffect, useRef } from "react";
+> 3 | import styles from "./clients.module.css";
+    | ^
+  4 |
+  5 | const fmt = (n: number) =>
+  6 |   new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n);
+
+https://nextjs.org/docs/messages/module-not-found
+ GET /api/invoices?status=issued 500 in 17577ms
+ GET /clients 500 in 17577ms
+ GET /LOGIN 500 in 9356ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\cache\webpack\client-development-fallback\0.pack.gz_' -> 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\cache\webpack\client-development-fallback\0.pack.gz'
+ GET / 500 in 45ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /_error in 1117ms (1146 modules)
+ GET / 200 in 895ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 579ms (730 modules)
+ GET /favicon.ico 200 in 1112ms
+ GET /api/invoices?status=issued 200 in 830ms
+ GET /api/invoices 200 in 831ms
+ GET /api/reports/summary?year=2025 200 in 898ms
+ GET /api/invoices?status=issued 200 in 47ms
+ GET /api/reports/summary?year=2026 200 in 912ms
+ ✓ Compiled in 160ms (409 modules)
+ GET / 200 in 150ms
+ ✓ Compiled in 188ms (409 modules)
+ GET / 200 in 69ms
+ ✓ Compiled in 187ms (405 modules)
+ GET / 200 in 242ms
+ ✓ Compiled in 804ms (1172 modules)
+ GET / 200 in 790ms
+ GET / 200 in 48ms
+ ✓ Compiled in 181ms (405 modules)
+ GET / 200 in 259ms
+ ✓ Compiled in 565ms (1172 modules)
+ GET / 200 in 431ms
+ GET / 200 in 58ms
+ ✓ Compiled in 145ms (405 modules)
+ GET / 200 in 72ms
+ ✓ Compiled in 150ms (405 modules)
+ GET / 200 in 69ms
+ ○ Compiling /invoices ...
+ ✓ Compiled /invoices in 1352ms (997 modules)
+ GET /invoices 200 in 1584ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 751ms (722 modules)
+ GET /api/invoices 200 in 1240ms
+ GET /invoices 200 in 146ms
+ GET /api/invoices 200 in 49ms
+ ○ Compiling /clients ...
+ ✓ Compiled /clients in 602ms (728 modules)
+ GET /clients 200 in 874ms
+ ○ Compiling /api/clients ...
+ ✓ Compiled /api/clients in 840ms (1126 modules)
+ GET /api/clients 200 in 1001ms
+ GET /api/invoices 200 in 1022ms
+ GET /api/clients 200 in 55ms
+ GET /api/invoices 200 in 43ms
+ ○ Compiling /expenses ...
+ ✓ Compiled /expenses in 606ms (1146 modules)
+ GET /expenses 200 in 743ms
+ ✓ Compiled /api/expenses in 443ms (1139 modules)
+ GET /api/expenses 200 in 569ms
+ GET /api/expenses 200 in 78ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 693ms (1144 modules)
+ GET /reports 404 in 798ms
+ GET /reports 404 in 200ms
+ GET /expenses 200 in 234ms
+ GET /api/invoices?status=issued 200 in 96ms
+ GET /api/expenses 200 in 117ms
+ GET /reports 404 in 79ms
+ GET /reports 404 in 79ms
+ GET /expenses 200 in 161ms
+ GET /api/invoices?status=issued 200 in 60ms
+ GET /api/expenses 200 in 62ms
+ GET /settings 404 in 81ms
+ GET /settings 404 in 176ms
+ GET /expenses 200 in 141ms
+ GET /api/expenses 200 in 69ms
+ GET /api/invoices?status=issued 200 in 74ms
+ GET /invoices 200 in 68ms
+ GET /api/invoices 200 in 55ms
+ GET /api/invoices 200 in 46ms
+ ○ Compiling /invoices/new ...
+ ✓ Compiled /invoices/new in 1244ms (1153 modules)
+ GET /invoices/new 200 in 1464ms
+ ✓ Compiled /api/clients in 311ms (743 modules)
+ GET /api/clients 200 in 523ms
+ GET /api/clients 200 in 60ms
+ GET /clients 200 in 180ms
+ GET /api/clients 200 in 68ms
+ GET /api/invoices 200 in 82ms
+ GET /api/clients 200 in 55ms
+ GET /api/invoices 200 in 51ms
+ GET /expenses 200 in 134ms
+ ✓ Compiled /api/expenses in 333ms (746 modules)
+ GET /api/expenses 200 in 488ms
+ GET /api/expenses 200 in 65ms
+ GET /expenses 200 in 597ms
+ ✓ Compiled in 1860ms (1352 modules)
+ GET /expenses 200 in 117ms
+ ✓ Compiled in 1069ms (1208 modules)
+ GET /expenses 200 in 338ms
+ ✓ Compiled in 879ms (1208 modules)
+ GET /expenses 200 in 198ms
+ ✓ Compiled in 169ms (417 modules)
+ GET /expenses 200 in 73ms
+ ✓ Compiled in 172ms (417 modules)
+ GET /expenses 200 in 101ms
+ ○ Compiling /reports ...
+ ✓ Compiled /reports in 1691ms (1033 modules)
+ GET /reports 200 in 1930ms
+ ○ Compiling /api/reports/summary ...
+ ✓ Compiled /api/reports/summary in 786ms (738 modules)
+ GET /api/reports/summary?year=2026 200 in 1198ms
+ GET /api/reports/summary?year=2026 200 in 149ms
+ ○ Compiling /settings ...
+ ✓ Compiled /settings in 716ms (1159 modules)
+ GET /settings 200 in 922ms
+ ○ Compiling /api/settings ...
+ ✓ Compiled /api/settings in 527ms (1152 modules)
+ GET /api/settings 200 in 664ms
+ GET /api/settings 200 in 50ms
+ ✓ Compiled in 1348ms (1035 modules)
+ GET /settings 200 in 412ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 665ms (740 modules)
+ GET /api/invoices?status=issued 200 in 1327ms
+ ✓ Compiled in 698ms (1165 modules)
+ GET /settings 200 in 313ms
+ GET /api/invoices?status=issued 200 in 328ms
+ ✓ Compiled in 571ms (1165 modules)
+ GET /settings 200 in 239ms
+ GET /api/invoices?status=issued 200 in 92ms
+ ✓ Compiled in 700ms (1174 modules)
+ GET /settings 200 in 320ms
+ GET /api/invoices?status=issued 200 in 295ms
+ ✓ Compiled in 666ms (1174 modules)
+ GET /settings 200 in 241ms
+ GET /api/invoices?status=issued 200 in 227ms
+ ○ Compiling /api/auth/logout ...
+ ✓ Compiled /api/auth/logout in 1018ms (1137 modules)
+ POST /api/auth/logout 200 in 1226ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1305ms (1144 modules)
+ GET /login 200 in 1626ms
+ GET /login?callbackUrl=%2F 200 in 291ms
+ ✓ Compiled in 218ms (427 modules)
+ GET /login?callbackUrl=%2F 200 in 307ms
+ ✓ Compiled in 1829ms (1333 modules)
+ GET /login?callbackUrl=%2F 200 in 1553ms
+ GET /login?callbackUrl=%2F 200 in 55ms
+ ✓ Compiled in 214ms (427 modules)
+ GET /login?callbackUrl=%2F 200 in 337ms
+ ✓ Compiled in 1015ms (1333 modules)
+ GET /login?callbackUrl=%2F 200 in 760ms
+ GET /login?callbackUrl=%2F 200 in 66ms
+ ✓ Compiled in 199ms (427 modules)
+ GET /login?callbackUrl=%2F 200 in 290ms
+ ✓ Compiled in 895ms (1333 modules)
+ GET /login?callbackUrl=%2F 200 in 671ms
+ GET /login?callbackUrl=%2F 200 in 56ms
+ ✓ Compiled in 1288ms (1036 modules)
+ GET /login?callbackUrl=%2F 200 in 345ms
+ ✓ Compiled in 564ms (1045 modules)
+ GET /login?callbackUrl=%2F 200 in 185ms
+ ○ Compiling /register ...
+ ✓ Compiled /register in 1691ms (1029 modules)
+ GET /register 200 in 1939ms
+ ○ Compiling /api/auth/register ...
+ ✓ Compiled /api/auth/register in 1306ms (1153 modules)
+ POST /api/auth/register 201 in 2105ms
+ ○ Compiling / ...
+ ✓ Compiled / in 718ms (744 modules)
+ GET / 200 in 985ms
+ ○ Compiling /api/reports/summary ...
+ ✓ Compiled /api/reports/summary in 733ms (747 modules)
+ ✓ Compiled (752 modules)
+ GET /api/invoices 200 in 1679ms
+ GET /api/invoices?status=issued 200 in 1683ms
+ GET /api/reports/summary?year=2026 200 in 1753ms
+ GET /api/reports/summary?year=2025 200 in 1770ms
+ GET /api/invoices?status=issued 200 in 85ms
+ GET /api/invoices 200 in 107ms
+ GET /api/invoices?status=issued 200 in 81ms
+ GET /api/reports/summary?year=2026 200 in 126ms
+ GET /api/reports/summary?year=2025 200 in 149ms
+ GET /api/invoices?status=issued 200 in 55ms
+ GET /settings 200 in 152ms
+ ○ Compiling /api/auth/me ...
+ ✓ Compiled /api/auth/me in 1204ms (1161 modules)
+ GET /api/auth/me 200 in 1457ms
+ GET /api/auth/me 200 in 74ms
+ ⨯ ./src/components/layout/Sidebar.tsx
+Module parse failed: Identifier 'companyName' has already been declared (78:10)
+|         }
+|     ];
+>     const companyName = "ACME GmbH";
+|     const initials = companyName.trim()[0].toUpperCase();
+|     return /*#__PURE__*/ _jsxDEV("aside", {
+
+Import trace for requested module:
+./src/components/layout/Sidebar.tsx
+ ✓ Compiled in 1031ms (1037 modules)
+ GET /settings 200 in 390ms
+ ○ Compiling /api/auth/me ...
+ ✓ Compiled /api/auth/me in 614ms (738 modules)
+ ✓ Compiled (741 modules)
+ GET /api/auth/me 200 in 1170ms
+ GET /api/invoices?status=issued 200 in 1200ms
+ GET / 200 in 253ms
+ ○ Compiling /api/reports/summary ...
+ ✓ Compiled /api/reports/summary in 629ms (746 modules)
+ GET /api/invoices 200 in 1150ms
+ GET /api/invoices?status=issued 200 in 1153ms
+ GET /api/reports/summary?year=2026 200 in 1231ms
+ GET /api/reports/summary?year=2025 200 in 1233ms
+ GET /api/invoices?status=issued 200 in 55ms
+ GET /api/invoices 200 in 77ms
+ GET /api/reports/summary?year=2026 200 in 124ms
+ GET /api/reports/summary?year=2025 200 in 116ms
+ ○ Compiling /invoices ...
+ ✓ Compiled /invoices in 782ms (752 modules)
+ GET /invoices 200 in 1014ms
+ GET /api/invoices 200 in 84ms
+ GET /api/invoices 200 in 52ms
+ ✓ Compiled /clients in 484ms (758 modules)
+ GET /clients 200 in 623ms
+ ○ Compiling /api/clients ...
+ ✓ Compiled /api/clients in 723ms (761 modules)
+ GET /api/clients 200 in 1244ms
+ GET /api/invoices 200 in 1268ms
+ GET /api/clients 200 in 114ms
+ GET /api/invoices 200 in 127ms
+ ○ Compiling /expenses ...
+ ✓ Compiled /expenses in 942ms (758 modules)
+ GET /expenses 200 in 1166ms
+ GET /expenses 200 in 44ms
+ ○ Compiling /api/expenses ...
+ ✓ Compiled /api/expenses in 896ms (760 modules)
+ GET /api/expenses 200 in 1151ms
+ GET /expenses 200 in 331ms
+ GET /api/expenses 200 in 80ms
+ GET /expenses 200 in 59ms
+ GET /settings 200 in 80ms
+ ✓ Compiled /api/auth/me in 420ms (763 modules)
+ GET /api/auth/me 200 in 552ms
+ GET /api/auth/me 200 in 60ms
+ GET / 200 in 155ms
+ GET /api/invoices 200 in 137ms
+ GET /api/invoices?status=issued 200 in 140ms
+ GET /api/reports/summary?year=2025 200 in 161ms
+ GET /api/reports/summary?year=2026 200 in 164ms
+ GET /api/invoices?status=issued 200 in 70ms
+ GET /api/invoices 200 in 89ms
+ GET /api/reports/summary?year=2026 200 in 140ms
+ GET /api/reports/summary?year=2025 200 in 145ms
+ ✓ Compiled in 538ms (429 modules)
+ ✓ Compiled in 295ms (429 modules)
+ GET / 200 in 262ms
+ GET / 200 in 57ms
+ ✓ Compiled in 341ms (429 modules)
+ GET / 200 in 97ms
+ GET / 200 in 70ms
+ ✓ Compiled in 875ms (1038 modules)
+ GET / 200 in 327ms
+ ○ Compiling /invoices ...
+ ✓ Compiled /invoices in 577ms (615 modules)
+ GET /invoices 200 in 779ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 744ms (745 modules)
+ GET /api/invoices 200 in 1200ms
+ GET /invoices 200 in 173ms
+ GET /api/invoices 200 in 62ms
+ ○ Compiling /api/reports/export ...
+ ✓ Compiled /api/reports/export in 2.1s (1175 modules)
+ GET /api/reports/export?type=eur 200 in 2431ms
+ GET /invoices 200 in 213ms
+ GET /clients 200 in 172ms
+ ○ Compiling /api/clients ...
+ ✓ Compiled /api/clients in 769ms (748 modules)
+ GET /api/clients 200 in 1369ms
+ GET /api/invoices 200 in 1352ms
+ GET /api/clients 200 in 60ms
+ GET /api/invoices 200 in 78ms
+ ○ Compiling /reports ...
+ ✓ Compiled /reports in 723ms (754 modules)
+ GET /reports 200 in 862ms
+ ○ Compiling /api/reports/summary ...
+ ✓ Compiled /api/reports/summary in 760ms (756 modules)
+ GET /reports 200 in 108ms
+ GET /api/reports/summary?year=2026 200 in 996ms
+ GET /api/reports/summary?year=2026 200 in 118ms
+ GET /invoices 200 in 138ms
+ GET /api/invoices 200 in 68ms
+ GET /api/invoices 200 in 46ms
+ ○ Compiling /invoices/new ...
+ ✓ Compiled /invoices/new in 1081ms (762 modules)
+ GET /invoices/new 200 in 1232ms
+ GET /api/clients 200 in 127ms
+ GET /api/clients 200 in 90ms
+ GET / 200 in 283ms
+ GET /api/invoices 200 in 202ms
+ GET /api/reports/summary?year=2026 200 in 211ms
+ GET /api/invoices?status=issued 200 in 217ms
+ GET /api/reports/summary?year=2025 200 in 263ms
+ GET /api/invoices 200 in 151ms
+ GET /api/invoices?status=issued 200 in 176ms
+ GET /api/reports/summary?year=2026 200 in 220ms
+ GET /api/reports/summary?year=2025 200 in 170ms
+ GET /invoices/new 200 in 65ms
+ GET /api/clients 200 in 57ms
+ GET /api/clients 200 in 50ms
+ ✓ Compiled in 2.7s (1234 modules)
+ GET /invoices/new 200 in 2321ms
+ GET /invoices/new 200 in 60ms
+ ✓ Compiled in 1443ms (1039 modules)
+ GET /invoices/new 200 in 249ms
+ ✓ Compiled in 1064ms (1048 modules)
+ GET /invoices/new 200 in 132ms
+ ✓ Compiled in 483ms (429 modules)
+ GET /invoices/new 200 in 76ms
+ ✓ Compiled in 254ms (429 modules)
+ GET /invoices/new 200 in 73ms
+ GET /settings 200 in 79ms
+ ○ Compiling /api/auth/me ...
+ ✓ Compiled /api/auth/me in 1680ms (729 modules)
+ GET /api/auth/me 200 in 1963ms
+ GET /api/auth/me 200 in 63ms
+ ○ Compiling /reports ...
+ ✓ Compiled /reports in 1481ms (616 modules)
+ GET /reports 200 in 2038ms
+ ○ Compiling /api/reports/summary ...
+ ✓ Compiled /api/reports/summary in 821ms (738 modules)
+ GET /api/reports/summary?year=2026 200 in 1186ms
+ GET /api/reports/summary?year=2026 200 in 146ms
+ GET /expenses 200 in 210ms
+ ○ Compiling /api/expenses ...
+ ✓ Compiled /api/expenses in 1347ms (751 modules)
+ GET /api/expenses 200 in 1618ms
+ GET /api/expenses 200 in 55ms
+ ○ Compiling /clients ...
+ ✓ Compiled /clients in 996ms (757 modules)
+ GET /clients 200 in 1188ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 955ms (760 modules)
+ ✓ Compiled (762 modules)
+ GET /api/clients 200 in 1601ms
+ GET /api/invoices 200 in 1604ms
+ GET /api/invoices 200 in 60ms
+ GET /api/clients 200 in 66ms
+ GET /invoices 200 in 476ms
+ GET /api/invoices 200 in 49ms
+ GET /api/invoices 200 in 56ms
+ GET /invoices/new 200 in 197ms
+ GET /api/clients 200 in 67ms
+ GET /api/clients 200 in 48ms
+ GET /clients 200 in 137ms
+ GET /api/clients 200 in 77ms
+ GET /api/invoices 200 in 95ms
+ GET /api/clients 200 in 81ms
+ GET /api/invoices 200 in 83ms
+ ✓ Compiled in 690ms (429 modules)
+ GET /clients 200 in 89ms
+ GET /invoices 200 in 78ms
+ GET /api/invoices 200 in 62ms
+ GET /api/invoices 200 in 53ms
+ GET /invoices/new 200 in 165ms
+ GET /api/clients 200 in 59ms
+ GET /api/clients 200 in 83ms
+ GET /clients 200 in 153ms
+ GET /api/clients 200 in 76ms
+ GET /api/invoices 200 in 87ms
+ GET /api/clients 200 in 70ms
+ GET /api/invoices 200 in 74ms
+ ✓ Compiled in 675ms (429 modules)
+ GET /clients 200 in 73ms
+ ✓ Compiled in 243ms (429 modules)
+ GET /clients 200 in 64ms
+ POST /api/clients 400 in 66ms
+ ○ Compiling /api/auth/register ...
+ ✓ Compiled /api/auth/register in 1390ms (743 modules)
+ POST /api/auth/register 201 in 2010ms
+ ✓ Compiled /api/invoices in 341ms (746 modules)
+ POST /api/invoices 201 in 557ms
+ ○ Compiling /api/invoices/[id]/issue ...
+ ✓ Compiled /api/invoices/[id]/issue in 1537ms (1178 modules)
+ GET /clients 200 in 169ms
+ POST /api/invoices/69a4821ca049623151eec2ad/issue 200 in 3303ms
+ ○ Compiling /api/invoices/[id]/xrechnung ...
+ ✓ Compiled /api/invoices/[id]/xrechnung in 631ms (1167 modules)
+ GET /api/invoices/69a4821ca049623151eec2ad/xrechnung 200 in 2149ms
+ POST /api/clients 400 in 153ms
+ POST /api/clients 400 in 77ms
+ POST /api/clients 400 in 81ms
+ POST /api/clients 400 in 29ms
+ GET /clients 200 in 150ms
+ GET /clients 200 in 148ms
+ POST /api/clients 400 in 78ms
+ POST /api/clients 201 in 133ms
+ GET /invoices 200 in 168ms
+ GET /api/invoices 200 in 66ms
+ GET /api/invoices 200 in 80ms
+ GET /invoices/new 200 in 135ms
+ GET /api/clients 200 in 61ms
+ GET /api/clients 200 in 84ms
+ POST /api/invoices 201 in 147ms
+ POST /api/invoices/69a483f5a049623151eec2bb/issue 200 in 207ms
+ ○ Compiling /invoices/[id] ...
+ ✓ Compiled /invoices/[id] in 2.4s (1192 modules)
+ GET /invoices/69a483f5a049623151eec2bb 200 in 3407ms
+ GET /invoices/69a483f5a049623151eec2bb 200 in 88ms
+ ○ Compiling /api/invoices/[id] ...
+ ✓ Compiled /api/invoices/[id] in 1387ms (1185 modules)
+ GET /invoices/69a483f5a049623151eec2bb 200 in 142ms
+ GET /api/invoices/69a483f5a049623151eec2bb 200 in 3298ms
+ GET /api/invoices/69a483f5a049623151eec2bb 200 in 61ms
+ ○ Compiling /settings ...
+ ✓ Compiled /settings in 1434ms (752 modules)
+ GET /settings 200 in 1579ms
+ ○ Compiling /api/auth/me ...
+ ✓ Compiled /api/auth/me in 926ms (755 modules)
+ GET /api/auth/me 200 in 1067ms
+ GET /api/auth/me 200 in 60ms
+ ○ Compiling /api/auth/upload-logo ...
+ ✓ Compiled /api/auth/upload-logo in 1308ms (1185 modules)
+ POST /api/auth/upload-logo 200 in 1543ms
+ GET /settings 200 in 119ms
+ GET /invoices 200 in 113ms
+ GET /api/invoices 200 in 90ms
+ GET /api/invoices 200 in 71ms
+ GET /invoices/new 200 in 157ms
+ ○ Compiling /api/clients ...
+ ✓ Compiled /api/clients in 1269ms (754 modules)
+ GET /api/clients 200 in 1473ms
+ GET /api/clients 200 in 59ms
+ POST /api/invoices 201 in 147ms
+ POST /api/invoices/69a48449a049623151eec2cb/issue 200 in 180ms
+ GET /invoices/69a48449a049623151eec2cb 200 in 116ms
+ GET /api/invoices/69a48449a049623151eec2cb 200 in 93ms
+ GET /api/invoices/69a48449a049623151eec2cb 200 in 63ms
+ ○ Compiling /api/invoices/[id]/pdf ...
+ ✓ Compiled /api/invoices/[id]/pdf in 1251ms (1177 modules)
+ENOENT: no such file or directory, open 'C:\logos\69a476d2a049623151eec225.png'
+ENOENT: no such file or directory, open 'C:\logos\69a476d2a049623151eec225.png'
+ GET /api/invoices/69a48449a049623151eec2cb/pdf 200 in 5774ms
+ ○ Compiling /api/invoices/[id]/pay ...
+ ✓ Compiled /api/invoices/[id]/pay in 2.4s (1172 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 208ms
+ POST /api/invoices/69a48449a049623151eec2cb/pay 200 in 4133ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1382ms (745 modules)
+ GET / 200 in 1618ms
+ ✓ Compiled /api/reports/summary in 421ms (748 modules)
+ ✓ Compiled (753 modules)
+ GET /api/invoices?status=issued 200 in 1631ms
+ GET /api/invoices 200 in 1635ms
+ GET /api/invoices 200 in 54ms
+ GET /api/reports/summary?year=2026 200 in 1720ms
+ GET /api/reports/summary?year=2025 200 in 1724ms
+ GET /api/invoices?status=issued 200 in 75ms
+ GET /api/reports/summary?year=2026 200 in 122ms
+ GET /api/reports/summary?year=2025 200 in 149ms
+ GET /invoices 200 in 209ms
+ GET /api/invoices 200 in 96ms
+ GET /api/invoices 200 in 63ms
+ GET /invoices/69a483f5a049623151eec2bb 200 in 409ms
+ GET /api/invoices?status=issued 200 in 106ms
+ ○ Compiling /api/invoices/[id] ...
+ ✓ Compiled /api/invoices/[id] in 1635ms (750 modules)
+ ✓ Compiled (752 modules)
+ GET /api/invoices/69a483f5a049623151eec2bb 200 in 3014ms
+ GET /api/auth/me 200 in 3038ms
+ POST /api/invoices/69a483f5a049623151eec2bb/pay 200 in 155ms
+ GET / 200 in 105ms
+ GET /api/invoices 200 in 118ms
+ GET /api/invoices?status=issued 200 in 123ms
+ GET /api/reports/summary?year=2026 200 in 138ms
+ GET /api/reports/summary?year=2025 200 in 161ms
+ GET /api/invoices 200 in 78ms
+ GET /api/invoices?status=issued 200 in 100ms
+ GET /api/reports/summary?year=2026 200 in 165ms
+ GET /api/reports/summary?year=2025 200 in 124ms
+ GET /invoices 200 in 116ms
+ GET /api/invoices 200 in 58ms
+ GET /api/invoices 200 in 86ms
+ GET /invoices 200 in 313ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 1035ms (754 modules)
+ GET /favicon.ico 200 in 1683ms
+ GET /api/invoices 200 in 1021ms
+ GET /api/invoices?status=issued 200 in 1027ms
+ GET /api/auth/me 200 in 1048ms
+ GET / 200 in 127ms
+ GET /api/invoices 200 in 98ms
+ GET /api/invoices?status=issued 200 in 104ms
+ GET /api/reports/summary?year=2026 200 in 136ms
+ GET /api/reports/summary?year=2025 200 in 154ms
+ GET /api/invoices 200 in 67ms
+ GET /api/invoices?status=issued 200 in 90ms
+ GET /api/reports/summary?year=2026 200 in 278ms
+ GET /api/reports/summary?year=2025 200 in 358ms
+ ○ Compiling /api/reports/export ...
+ ✓ Compiled /api/reports/export in 1534ms (757 modules)
+ GET /api/reports/export?year=2026&type=eur 200 in 1708ms
+ GET /invoices 200 in 166ms
+ GET /api/invoices 200 in 74ms
+ GET /api/invoices 200 in 52ms
+ GET /invoices/69a483f5a049623151eec2bb 200 in 317ms
+ GET /api/invoices?status=issued 200 in 97ms
+ GET /api/auth/me 200 in 99ms
+ GET /api/invoices/69a483f5a049623151eec2bb 200 in 117ms
+ ○ Compiling /api/invoices/[id]/storno ...
+ ✓ Compiled /api/invoices/[id]/storno in 1330ms (1190 modules)
+ GET /invoices/69a483f5a049623151eec2bb 200 in 131ms
+ POST /api/invoices/69a483f5a049623151eec2bb/storno 201 in 3043ms
+ GET /invoices/undefined 200 in 116ms
+ GET /api/invoices/undefined 400 in 65ms
+ GET /api/invoices/undefined 400 in 37ms
+ GET /invoices 200 in 133ms
+ GET /api/invoices 200 in 88ms
+ GET /api/invoices 200 in 70ms
+ GET /invoices/69a483f5a049623151eec2bb 200 in 277ms
+ GET /api/invoices?status=issued 200 in 83ms
+ GET /api/auth/me 200 in 103ms
+ GET /api/invoices/69a483f5a049623151eec2bb 200 in 99ms
+ ○ Compiling /api/invoices/[id]/pdf ...
+ ✓ Compiled /api/invoices/[id]/pdf in 997ms (754 modules)
+ENOENT: no such file or directory, open 'C:\logos\69a476d2a049623151eec225.png'
+ENOENT: no such file or directory, open 'C:\logos\69a476d2a049623151eec225.png'
+ GET /api/invoices/69a483f5a049623151eec2bb/pdf 200 in 1298ms
+ GET / 200 in 181ms
+ ✓ Compiled /api/reports/summary in 421ms (757 modules)
+ GET /api/invoices 200 in 947ms
+ GET /api/invoices?status=issued 200 in 925ms
+ GET /api/invoices?status=issued 200 in 56ms
+ GET /api/reports/summary?year=2025 200 in 1039ms
+ GET /api/reports/summary?year=2026 200 in 1057ms
+ GET /api/invoices 200 in 90ms
+ GET /api/reports/summary?year=2026 200 in 131ms
+ GET /api/reports/summary?year=2025 200 in 141ms
+ GET /settings 200 in 149ms
+ GET /api/auth/me 200 in 62ms
+ GET /api/auth/me 200 in 55ms
+ GET / 200 in 238ms
+ GET /api/invoices 200 in 158ms
+ GET /api/invoices?status=issued 200 in 161ms
+ GET /api/reports/summary?year=2026 200 in 206ms
+ GET /api/reports/summary?year=2025 200 in 247ms
+ GET /api/invoices 200 in 96ms
+ GET /api/invoices?status=issued 200 in 111ms
+ GET /api/reports/summary?year=2026 200 in 129ms
+ GET /api/reports/summary?year=2025 200 in 136ms
+ ○ Compiling /api/auth/logout ...
+ ✓ Compiled /api/auth/logout in 1640ms (726 modules)
+ POST /api/auth/logout 200 in 1785ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1523ms (731 modules)
+ GET /login 200 in 1725ms
+ ✓ Compiled in 1491ms (433 modules)
+ ✓ Compiled in 282ms (433 modules)
+ ✓ Compiled in 218ms (433 modules)
+ ✓ Compiled in 242ms (442 modules)
+ ○ Compiling /api/auth/login ...
+ ✓ Compiled /api/auth/login in 1098ms (1172 modules)
+ POST /api/auth/login 200 in 1892ms
+ GET / 200 in 130ms
+ ✓ Compiled /api/reports/summary in 281ms (742 modules)
+ ✓ Compiled (749 modules)
+ GET /api/invoices 200 in 1233ms
+ GET /api/invoices 200 in 88ms
+ GET /api/reports/summary?year=2026 200 in 1410ms
+ GET /api/reports/summary?year=2025 200 in 1435ms
+ GET /api/invoices?status=issued 200 in 1456ms
+ GET /api/auth/me 200 in 1466ms
+ GET /api/reports/summary?year=2026 200 in 120ms
+ GET /api/invoices?status=issued 200 in 62ms
+ GET /api/reports/summary?year=2025 200 in 125ms
+ GET /api/invoices?status=issued 200 in 58ms
+ GET /api/invoices?status=issued 200 in 49ms
+ GET /api/auth/me 200 in 245ms
+ ✓ Compiled /clients in 369ms (755 modules)
+ GET /clients 200 in 504ms
+ ○ Compiling /api/clients ...
+ ✓ Compiled /api/clients in 723ms (758 modules)
+ GET /api/invoices 200 in 1309ms
+ GET /api/clients 200 in 1314ms
+ GET /api/invoices 200 in 51ms
+ GET /api/clients 200 in 55ms
+ ○ Compiling /api/auth/register ...
+ ✓ Compiled /api/auth/register in 768ms (739 modules)
+ POST /api/auth/register 409 in 885ms
+ ✓ Compiled /api/auth/login in 522ms (741 modules)
+ POST /api/auth/login 200 in 1071ms
+ ✓ Compiled /api/invoices in 284ms (744 modules)
+ POST /api/invoices 201 in 425ms
+ ○ Compiling /api/invoices/[id]/issue ...
+ ✓ Compiled /api/invoices/[id]/issue in 1188ms (748 modules)
+ POST /api/invoices/69a4ad54a049623151eec367/issue 200 in 1400ms
+ ⨯ Failed to generate static paths for /api/invoices/[id]/issue:
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  type: 'SyntaxError'
+}
+ ✓ Compiled /api/invoices/[id]/xrechnung in 371ms (751 modules)
+ GET /api/invoices/69a4ad54a049623151eec367/xrechnung 200 in 516ms
+ ✓ Compiled in 566ms (433 modules)
+ ✓ Compiled in 196ms (433 modules)
+ ✓ Compiled in 182ms (433 modules)
+ ✓ Compiled in 480ms (442 modules)
+ ✓ Compiled in 195ms (442 modules)
+ ✓ Compiled in 156ms (442 modules)
+ ✓ Compiled in 195ms (442 modules)
+ ○ Compiling /clients ...
+ ✓ Compiled /clients in 660ms (615 modules)
+ GET /clients 200 in 1030ms
+ ○ Compiling /api/clients ...
+ ✓ Compiled /api/clients in 878ms (632 modules)
+ ✓ Compiled (753 modules)
+ GET /favicon.ico 200 in 2099ms
+ GET /api/invoices?status=issued 200 in 1867ms
+ GET /api/invoices 200 in 1871ms
+ GET /api/clients 200 in 1873ms
+ GET /api/auth/me 200 in 1875ms
+ ○ Compiling /invoices ...
+ ✓ Compiled /invoices in 751ms (759 modules)
+ GET /invoices 200 in 1088ms
+ GET /api/invoices 200 in 97ms
+ GET /invoices 200 in 35ms
+ GET /api/invoices 200 in 55ms
+ GET /clients 200 in 42ms
+ GET /api/clients 200 in 69ms
+ GET /api/invoices 200 in 72ms
+ GET /api/clients 200 in 44ms
+ GET /api/invoices 200 in 50ms
+ POST /api/clients 201 in 75ms
+ GET /settings 200 in 66ms
+ GET /api/auth/me 200 in 60ms
+ GET /api/auth/me 200 in 49ms
+ ✓ Compiled in 628ms (433 modules)
+ GET /settings 200 in 59ms
+ ✓ Compiled in 181ms (433 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1195ms (1033 modules)
+ GET /settings 404 in 1425ms
+ GET /settings 200 in 218ms
+ ✓ Compiled /api/auth/me in 222ms (740 modules)
+ ✓ Compiled (743 modules)
+ GET /api/invoices?status=issued 200 in 671ms
+ GET /api/auth/me 200 in 668ms
+ GET /api/auth/me 200 in 41ms
+ ✓ Compiled in 169ms (437 modules)
+ GET /settings 200 in 102ms
+ ✓ Compiled in 194ms (437 modules)
+ GET /settings 200 in 46ms
+ GET / 200 in 52ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 979ms (731 modules)
+ ✓ Compiled (744 modules)
+ GET /api/invoices 200 in 1397ms
+ GET /api/invoices?status=issued 200 in 1399ms
+ GET /api/reports/summary?year=2026 200 in 1432ms
+ GET /api/reports/summary?year=2025 200 in 1433ms
+ GET /api/invoices 200 in 46ms
+ GET /api/invoices?status=issued 200 in 67ms
+ GET /api/reports/summary?year=2026 200 in 115ms
+ GET /api/reports/summary?year=2025 200 in 142ms
+ GET /invoices 200 in 88ms
+ GET /api/invoices 200 in 56ms
+ GET /api/invoices 200 in 67ms
+ ○ Compiling /invoices/[id] ...
+ ✓ Compiled /invoices/[id] in 543ms (750 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 852ms
+ GET /api/invoices?status=issued 200 in 104ms
+ ✓ Compiled /api/invoices/[id] in 276ms (753 modules)
+ ✓ Compiled (755 modules)
+ GET /api/auth/me 200 in 1018ms
+ GET /api/invoices/69a48449a049623151eec2cb 200 in 1011ms
+ ○ Compiling /api/invoices/[id]/pdf ...
+ ✓ Compiled /api/invoices/[id]/pdf in 1059ms (761 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 235ms
+ GET /api/invoices/69a48449a049623151eec2cb/pdf 200 in 1759ms
+ GET /settings 200 in 54ms
+ GET /api/auth/me 200 in 62ms
+ GET /api/auth/me 200 in 59ms
+ ○ Compiling /api/auth/upload-logo ...
+ ✓ Compiled /api/auth/upload-logo in 636ms (731 modules)
+ POST /api/auth/upload-logo 200 in 795ms
+ POST /api/auth/upload-logo 200 in 58ms
+ POST /api/auth/upload-logo 200 in 60ms
+ ○ Compiling /api/auth/account ...
+ ✓ Compiled /api/auth/account in 1035ms (1168 modules)
+ PUT /api/auth/account 200 in 1420ms
+ GET /settings 200 in 100ms
+ ✓ Compiled in 1121ms (1042 modules)
+ GET /settings 200 in 229ms
+ ✓ Compiled in 184ms (433 modules)
+ GET /settings 200 in 40ms
+ ✓ Compiled in 1844ms (1042 modules)
+ GET /settings 200 in 197ms
+ ✓ Compiled /api/auth/me in 347ms (728 modules)
+ GET /api/auth/me 200 in 619ms
+ GET /settings 200 in 101ms
+ ✓ Compiled in 475ms (1170 modules)
+ GET /settings 200 in 124ms
+ ✓ Compiled in 191ms (433 modules)
+ GET /settings 200 in 43ms
+ ✓ Compiled in 171ms (433 modules)
+ GET /settings 200 in 46ms
+ ○ Compiling /api/auth/account ...
+ ✓ Compiled /api/auth/account in 585ms (734 modules)
+ PUT /api/auth/account 200 in 746ms
+ GET /settings 200 in 76ms
+ PUT /api/auth/account 200 in 86ms
+ PUT /api/auth/account 200 in 50ms
+ ○ Compiling / ...
+ ✓ Compiled / in 996ms (740 modules)
+ GET / 200 in 1131ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 672ms (743 modules)
+ ✓ Compiled (756 modules)
+ GET /api/invoices 200 in 2047ms
+ GET /api/invoices?status=issued 200 in 2053ms
+ GET /api/reports/summary?year=2026 200 in 2064ms
+ GET /api/reports/summary?year=2025 200 in 2067ms
+ GET /api/invoices?status=issued 200 in 57ms
+ GET /api/invoices 200 in 74ms
+ GET /api/reports/summary?year=2025 200 in 126ms
+ GET /api/reports/summary?year=2026 200 in 131ms
+ ✓ Compiled in 657ms (433 modules)
+ GET / 200 in 115ms
+ ✓ Compiled in 204ms (433 modules)
+ GET / 200 in 42ms
+ GET / 200 in 768ms
+ ✓ Compiled in 1089ms (1377 modules)
+ GET / 200 in 114ms
+ ✓ Compiled in 616ms (433 modules)
+ GET / 200 in 47ms
+ GET /invoices 200 in 50ms
+ GET /api/invoices 200 in 116ms
+ GET /api/invoices 200 in 42ms
+ GET /invoices/69a48449a049623151eec2cb 200 in 244ms
+ GET /api/invoices?status=issued 200 in 65ms
+ ✓ Compiled /api/invoices/[id] in 251ms (743 modules)
+ ✓ Compiled (745 modules)
+ GET /api/invoices/69a48449a049623151eec2cb 200 in 1033ms
+ GET /api/auth/me 200 in 1049ms
+ ○ Compiling /api/invoices/[id]/pdf ...
+ ✓ Compiled /api/invoices/[id]/pdf in 687ms (752 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 83ms
+ GET /api/invoices/69a48449a049623151eec2cb/pdf 200 in 997ms
+ ✓ Compiled in 1382ms (1043 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 262ms
+ ✓ Compiled in 235ms (433 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 57ms
+ ✓ Compiled in 175ms (433 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 60ms
+ ✓ Compiled in 2.1s (1043 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 397ms
+ ✓ Compiled in 1029ms (1043 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 91ms
+ ✓ Compiled in 438ms (1043 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 118ms
+ ✓ Compiled in 153ms (433 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 67ms
+ GET /settings 200 in 43ms
+ ○ Compiling /api/auth/me ...
+ ✓ Compiled /api/auth/me in 1388ms (729 modules)
+ GET /api/auth/me 200 in 1672ms
+ GET /settings 200 in 122ms
+ GET /api/auth/me 200 in 59ms
+ ✓ Compiled in 509ms (433 modules)
+ GET /settings 200 in 51ms
+ ○ Compiling /api/auth/account ...
+ ✓ Compiled /api/auth/account in 1218ms (735 modules)
+ PUT /api/auth/account 200 in 1445ms
+ GET /settings 200 in 107ms
+ GET /invoices 200 in 40ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 724ms (748 modules)
+ GET /api/invoices 200 in 936ms
+ GET /invoices 200 in 110ms
+ GET /api/invoices 200 in 46ms
+ GET /invoices/69a48449a049623151eec2cb 200 in 233ms
+ GET /api/invoices?status=issued 200 in 62ms
+ ○ Compiling /api/invoices/[id] ...
+ ✓ Compiled /api/invoices/[id] in 685ms (750 modules)
+ GET /api/auth/me 200 in 1019ms
+ GET /api/invoices/69a48449a049623151eec2cb 200 in 1038ms
+ ○ Compiling /api/invoices/[id]/pdf ...
+ ✓ Compiled /api/invoices/[id]/pdf in 769ms (756 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 83ms
+ GET /api/invoices/69a48449a049623151eec2cb/pdf 200 in 1105ms
+ ✓ Compiled in 1852ms (1043 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 203ms
+ ✓ Compiled in 1391ms (1043 modules)
+ GET /invoices/69a48449a049623151eec2cb 200 in 147ms
+ GET /settings 200 in 38ms
+ ✓ Compiled /api/auth/me in 271ms (729 modules)
+ GET /api/auth/me 200 in 482ms
+ GET /api/auth/me 200 in 42ms
+ ○ Compiling /api/auth/account ...
+ ✓ Compiled /api/auth/account in 564ms (735 modules)
+ PUT /api/auth/account 200 in 785ms
+ GET /settings 200 in 103ms
+ GET /invoices 200 in 38ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 1202ms (748 modules)
+ GET /api/invoices 200 in 1319ms
+ GET /api/invoices 200 in 42ms
+ GET /settings 200 in 83ms
+ GET /api/auth/me 200 in 45ms
+ GET /api/auth/me 200 in 51ms
+ GET / 200 in 67ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 1277ms (732 modules)
+ ✓ Compiled (745 modules)
+ GET /api/invoices 200 in 1727ms
+ GET /api/invoices?status=issued 200 in 1730ms
+ GET /api/reports/summary?year=2026 200 in 1763ms
+ GET /api/reports/summary?year=2025 200 in 1764ms
+ GET /api/invoices?status=issued 200 in 58ms
+ GET /api/invoices 200 in 65ms
+ GET /api/reports/summary?year=2026 200 in 98ms
+ GET /api/reports/summary?year=2025 200 in 126ms
+ GET /settings 200 in 73ms
+ ✓ Compiled /api/auth/me in 218ms (748 modules)
+ GET /api/auth/me 200 in 314ms
+ GET /api/auth/me 200 in 46ms
+ ○ Compiling /api/auth/account ...
+ ✓ Compiled /api/auth/account in 886ms (751 modules)
+ PUT /api/auth/account 200 in 1022ms
+ ○ Compiling /reports ...
+ ✓ Compiled /reports in 1036ms (757 modules)
+ GET /reports 200 in 1180ms
+ GET /api/reports/summary?year=2026 200 in 125ms
+ GET /api/reports/summary?year=2026 200 in 98ms
+ GET /settings 200 in 115ms
+ GET /api/auth/me 200 in 57ms
+ GET /api/auth/me 200 in 41ms
+ PUT /api/auth/account 200 in 59ms
+ GET /invoices 200 in 48ms
+ GET /api/invoices 200 in 85ms
+ GET /api/invoices 200 in 44ms
+ GET /settings 200 in 38ms
+ GET /api/auth/me 200 in 48ms
+ GET /api/auth/me 200 in 42ms
+ GET /settings 200 in 214ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 1339ms (750 modules)
+ GET /favicon.ico 200 in 1683ms
+ GET /api/auth/me 200 in 1018ms
+ GET /api/invoices?status=issued 200 in 1049ms
+ GET /api/auth/me 200 in 43ms
+ PUT /api/auth/account 200 in 54ms
+ ✓ Compiled /reports in 263ms (756 modules)
+ GET /reports 200 in 346ms
+ ✓ Compiled /api/reports/summary in 282ms (759 modules)
+ GET /api/reports/summary?year=2026 200 in 429ms
+ GET /api/reports/summary?year=2026 200 in 107ms
+ GET /settings 200 in 67ms
+ GET /api/auth/me 200 in 54ms
+ GET /api/auth/me 200 in 60ms
+ PUT /api/auth/account 200 in 173ms
+ GET /reports 200 in 139ms
+ GET /api/reports/summary?year=2026 200 in 145ms
+ GET /api/reports/summary?year=2026 200 in 107ms
+ GET /settings 200 in 48ms
+ GET /api/auth/me 200 in 74ms
+ GET /api/auth/me 200 in 51ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1643ms (1034 modules)
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\oscar\\Desktop\\proyectos\\2026\\kleinunternehmer-app\\.next\\routes-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\oscar\\Desktop\\proyectos\\2026\\kleinunternehmer-app\\.next\\routes-manifest.json'
+}
+ ⨯ [Error: Cannot find module 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\server\pages\_document.js'
+Require stack:
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\require.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\load-components.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\utils.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\swc\options.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\swc\index.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\analysis\parse-module.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\analysis\get-page-static-info.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\lib\router-server.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\lib\start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\oscar\\Desktop\\proyectos\\2026\\kleinunternehmer-app\\.next\\routes-manifest.json'
+}
+ ⨯ [Error: Cannot find module 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\server\pages\_document.js'
+Require stack:
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\require.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\load-components.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\utils.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\swc\options.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\swc\index.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\analysis\parse-module.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\build\analysis\get-page-static-info.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\lib\router-server.js
+- C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\node_modules\next\dist\server\lib\start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\oscar\\Desktop\\proyectos\\2026\\kleinunternehmer-app\\.next\\routes-manifest.json'
+}
+ GET /settings 500 in 2323ms
+ GET /settings 500 in 40ms
+ ✓ Compiled /favicon.ico in 209ms (628 modules)
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\Users\oscar\Desktop\proyectos\2026\kleinunternehmer-app\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\oscar\\Desktop\\proyectos\\2026\\kleinunternehmer-app\\.next\\routes-manifest.json',
+  page: '/favicon.ico'
+}
+ GET /favicon.ico 500 in 407ms
+/c/Program Files/nodejs/npx: line 65:  1531 Killed                  "$NODE_EXE" "$NPX_CLI_JS" "$@"
+[?25h

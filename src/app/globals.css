@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #c8f04a;
+  --font-serif: "DM Serif Display", Georgia, serif;
+}
+
+html, body {
+  height: 100%;
+}

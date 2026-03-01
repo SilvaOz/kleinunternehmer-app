@@ -1,0 +1,195 @@
+/* ── Layout ── */
+.wrap { display: flex; flex-direction: column; gap: 16px; }
+
+.pageLabel {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'DM Mono', monospace;
+}
+.pageLabel::after { content: ''; flex: 1; height: 1px; background: #222230; }
+
+.card {
+  background: #111118;
+  border: 1px solid #1e1e2a;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #1a1a24;
+}
+.cardTitle {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: 'DM Serif Display', Georgia, serif;
+  color: #fff;
+  margin: 0;
+}
+.cardActions { display: flex; align-items: center; gap: 10px; }
+.searchWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0d0d12;
+  border: 1px solid #2a2a36;
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+.searchIcon { font-size: 14px; }
+.searchInput {
+  background: none;
+  border: none;
+  outline: none;
+  color: #ccc;
+  font-size: 13px;
+  width: 180px;
+}
+.searchInput::placeholder { color: #555; }
+.btnSecondary {
+  padding: 9px 16px;
+  border-radius: 8px;
+  background: #111118;
+  border: 1px solid #2e2e3c;
+  color: #ccc;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s;
+}
+.btnSecondary:hover { border-color: #555; }
+.btnPrimary {
+  padding: 9px 18px;
+  border-radius: 8px;
+  background: #c8f04a;
+  color: #111;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.15s;
+}
+.btnPrimary:hover { background: #d6f560; transform: translateY(-1px); }
+
+/* ── Filter tabs ── */
+.tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid #1a1a24;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #666;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.tab:hover { color: #aaa; }
+.tabActive {
+  color: #c8f04a;
+  border-bottom-color: #c8f04a;
+}
+.tabCount {
+  font-size: 11px;
+  background: #1e1e2a;
+  color: #666;
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-family: 'DM Mono', monospace;
+}
+.tabCountActive {
+  background: #1e2e10;
+  color: #c8f04a;
+}
+
+/* ── Table ── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #444;
+  text-align: left;
+  padding: 10px 24px;
+  border-bottom: 1px solid #1a1a24;
+  font-weight: 500;
+}
+.table td {
+  padding: 14px 24px;
+  border-bottom: 1px solid #181820;
+  font-size: 13px;
+  color: #bbb;
+  vertical-align: top;
+}
+.table tbody tr:last-child td { border-bottom: none; }
+
+.tableRow { cursor: pointer; transition: background 0.12s; }
+.tableRow:hover td { background: #15151e; }
+
+.numActive {
+  font-family: 'DM Mono', monospace;
+  color: #c8f04a;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.numDraft {
+  font-family: 'DM Mono', monospace;
+  color: #444;
+  font-size: 12px;
+}
+.clientName { font-size: 13px; color: #ccc; font-weight: 500; }
+.clientSub { font-size: 11px; color: #444; margin-top: 2px; }
+.dateCell { white-space: nowrap; color: #666; font-family: 'DM Mono', monospace; font-size: 12px; }
+.amount { font-weight: 600; color: #e6e6e6; }
+.negative { font-weight: 600; color: #f0215d; }
+.muted { color: #555; }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-weight: 600;
+}
+
+.emptyCell {
+  text-align: center;
+  color: #444;
+  padding: 40px 24px !important;
+  font-size: 13px;
+}
+
+/* ── Skeleton ── */
+.skeleton {
+  background: linear-gradient(90deg, #1a1a22 25%, #22222e 50%, #1a1a22 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

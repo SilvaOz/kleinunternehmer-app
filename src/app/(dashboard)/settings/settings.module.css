@@ -1,0 +1,253 @@
+/* ── Layout ── */
+.wrap { display: flex; flex-direction: column; gap: 16px; }
+
+.pageLabel {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'DM Mono', monospace;
+}
+.pageLabel::after { content: ''; flex: 1; height: 1px; background: #222230; }
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 680px;
+}
+
+/* ── Card ── */
+.card {
+  background: #111118;
+  border: 1px solid #1e1e2a;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.cardDanger {
+  border-color: #3a1020;
+}
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #1a1a24;
+}
+.cardTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e6e6e6;
+}
+.dangerTitle { color: #f0215d; }
+
+.emailTag {
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  color: #666;
+  background: #0d0d12;
+  border: 1px solid #2a2a36;
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+/* ── Form ── */
+.form {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.colFull { grid-column: 1 / -1; }
+
+.dividerLabel {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #444;
+  font-family: 'DM Mono', monospace;
+  padding: 6px 0 2px;
+  border-top: 1px solid #1a1a24;
+}
+
+.field { display: flex; flex-direction: column; gap: 5px; }
+.fieldLabel {
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+}
+.fieldInput {
+  background: #0d0d12;
+  border: 1px solid #2a2a36;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #e6e6e6;
+  font-size: 13px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.fieldInput:focus { border-color: #c8f04a; }
+.fieldInput::placeholder { color: #333; }
+
+.formFooter {
+  display: flex;
+  justify-content: flex-end;
+}
+.btnSave {
+  padding: 9px 24px;
+  border-radius: 8px;
+  background: #c8f04a;
+  color: #111;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.btnSave:hover { background: #d6f560; transform: translateY(-1px); }
+.btnSave:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+/* ── Feedback ── */
+.msgOk {
+  font-size: 12px;
+  color: #c8f04a;
+  background: #1a2210;
+  border: 1px solid #2a3a14;
+  border-radius: 6px;
+  padding: 8px 14px;
+}
+.msgErr {
+  font-size: 12px;
+  color: #f0215d;
+  background: #2a1018;
+  border: 1px solid #3a1020;
+  border-radius: 6px;
+  padding: 8px 14px;
+}
+
+/* ── Danger zone ── */
+.dangerBody {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.dangerText {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+.dangerText strong { color: #f0215d; font-weight: 600; }
+.btnDanger {
+  padding: 9px 20px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid #5a1020;
+  color: #f0215d;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btnDanger:hover { background: #2a1018; border-color: #f0215d; }
+
+/* ── Delete Modal overlay ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+.modal {
+  background: #111118;
+  border: 1px solid #5a1020;
+  border-radius: 14px;
+  padding: 28px;
+  max-width: 460px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+}
+.modalTitle {
+  font-size: 18px;
+  font-weight: 800;
+  color: #f0215d;
+  font-family: 'DM Serif Display', Georgia, serif;
+}
+.modalText {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+.modalActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+.btnCancel {
+  padding: 9px 20px;
+  border-radius: 8px;
+  background: none;
+  border: 1px solid #2e2e3c;
+  color: #888;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btnCancel:hover { border-color: #555; color: #ccc; }
+.btnCancel:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btnConfirmDelete {
+  padding: 9px 20px;
+  border-radius: 8px;
+  background: #f0215d;
+  border: none;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.btnConfirmDelete:hover:not(:disabled) { background: #d41850; transform: translateY(-1px); }
+.btnConfirmDelete:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+/* ── Skeleton ── */
+.skeletonBlock {
+  height: 500px;
+  background: linear-gradient(90deg, #1a1a22 25%, #22222e 50%, #1a1a22 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 14px;
+  max-width: 680px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
