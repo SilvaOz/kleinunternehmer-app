@@ -111,7 +111,6 @@ export async function GET(
     };
 
     console.log("[pdf] starting render for invoice", invoice.invoiceNumber);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const stream = await renderToStream(
       createElement(InvoicePDF, { invoice: invoiceLean, company }) as any
     ) as Readable;
