@@ -7,7 +7,14 @@
       "Bash(\"C:\\\\Users\\\\oscar\\\\Desktop\\\\proyectos\\\\2026\\\\kleinunternehmer-app\\\\scripts\\\\debug_after_issue.ps1\":*)",
       "Bash(npm install:*)",
       "Bash(npm info:*)",
-      "Bash(ls C:\\\\Users\\\\oscar\\\\Desktop\\\\proyectos\\\\2026\\\\kleinunternehmer-app\\\\src\\\\app\\\\\\(auth\\):*)"
+      "Bash(ls C:\\\\Users\\\\oscar\\\\Desktop\\\\proyectos\\\\2026\\\\kleinunternehmer-app\\\\src\\\\app\\\\\\(auth\\):*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(timeout 60 npx next:*)",
+      "Bash(npx next:*)",
+      "Bash(npx tsc:*)",
+      "Bash(taskkill:*)",
+      "Bash(ls:*)"
     ]
   }
 }
