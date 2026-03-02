@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
-import { pdf } from "@react-pdf/renderer";
+import { renderToBuffer } from "@react-pdf/renderer";
 import { createElement } from "react";
 import { connectDB } from "@/lib/db";
 import { getOwnerIdFromCookies } from "@/lib/auth";
@@ -109,11 +109,11 @@ export async function GET(
       accountHolder: user.company.accountHolder,
     };
 
-    type PdfFn = (el: object) => { toBuffer(): Promise<Buffer> };
     console.log("[pdf] starting render for invoice", invoice.invoiceNumber);
-    const buffer = await (pdf as unknown as PdfFn)(
-      createElement(InvoicePDF, { invoice: invoiceLean, company })
-    ).toBuffer();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const buffer = await renderToBuffer(
+      createElement(InvoicePDF, { invoice: invoiceLean, company }) as any
+    );
     console.log("[pdf] buffer size", buffer.length);
 
     if (!buffer || buffer.length === 0) {
