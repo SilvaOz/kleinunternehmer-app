@@ -10,6 +10,10 @@ const dmSerif = DM_Serif_Display({
   display: "swap",
 });
 
+export const viewport = {
+  colorScheme: "dark",
+};
+
 export const metadata: Metadata = {
   title: "InvoiceOS",
   description: "Buchhaltung für Kleinunternehmer nach §19 UStG",
