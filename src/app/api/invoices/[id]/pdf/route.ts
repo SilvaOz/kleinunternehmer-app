@@ -109,9 +109,8 @@ export async function GET(
       accountHolder: user.company.accountHolder,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const buffer = await pdf(
-      createElement(InvoicePDF, { invoice: invoiceLean, company }) as any
+      createElement(InvoicePDF, { invoice: invoiceLean, company }) as Parameters<typeof pdf>[0]
     ).toBuffer();
 
     const filename = `Rechnung-${invoice.invoiceNumber}.pdf`;

@@ -81,7 +81,8 @@ export async function POST(
 
         try {
             // Use insertOne to bypass validation hooks that reject negative unitPrices
-            await (Invoice.collection as any).insertOne({
+            type LooseColl = { insertOne(doc: Record<string, unknown>): Promise<unknown> };
+            await (Invoice.collection as unknown as LooseColl).insertOne({
                 ownerId:              new mongoose.Types.ObjectId(ownerId),
                 year,
                 sequence,

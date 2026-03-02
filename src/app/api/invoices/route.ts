@@ -27,7 +27,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const year = searchParams.get("year")?.trim();
     const q = searchParams.get("q")?.trim();
 
-    const filter: Record<string, any> = { ownerId };
+    const filter: Record<string, unknown> = { ownerId };
 
     if (status) filter.status = status;
 
@@ -98,18 +98,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const tempId = new mongoose.Types.ObjectId();
 
     // Normalizar y validar items
-    let normalizedItems: any[] = [];
+    const normalizedItems = Array.isArray(items)
+      ? items.map((item) => ({
+          title: item.title || "",
+          lines: Array.isArray(item.lines) ? item.lines : [],
+          qty: typeof item.qty === "number" ? item.qty : 1,
+          unitPrice: typeof item.unitPrice === "number" ? item.unitPrice : 0,
+        }))
+      : [];
 
-    if (Array.isArray(items)) {
-      normalizedItems = items.map((item: any) => ({
-        title: item.title || "",
-        lines: Array.isArray(item.lines) ? item.lines : [],
-        qty: typeof item.qty === "number" ? item.qty : 1,
-        unitPrice: typeof item.unitPrice === "number" ? item.unitPrice : 0,
-      }));
-    }
-
-    const invoiceData: Record<string, any> = {
+    const invoiceData: Record<string, unknown> = {
       ownerId,
       status: "draft",
       locked: false,
