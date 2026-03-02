@@ -110,9 +110,19 @@ export async function GET(
     };
 
     type PdfFn = (el: object) => { toBuffer(): Promise<Buffer> };
+    console.log("[pdf] starting render for invoice", invoice.invoiceNumber);
     const buffer = await (pdf as unknown as PdfFn)(
       createElement(InvoicePDF, { invoice: invoiceLean, company })
     ).toBuffer();
+    console.log("[pdf] buffer size", buffer.length);
+
+    if (!buffer || buffer.length === 0) {
+      console.error("[pdf] empty buffer returned");
+      return NextResponse.json(
+        { success: false, error: "PDF konnte nicht generiert werden" },
+        { status: 500 }
+      );
+    }
 
     const filename = `Rechnung-${invoice.invoiceNumber}.pdf`;
 
