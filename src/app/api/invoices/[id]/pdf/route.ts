@@ -116,7 +116,7 @@ export async function GET(
 
     const filename = `Rechnung-${invoice.invoiceNumber}.pdf`;
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       status: 200,
       headers: {
         "Content-Type":        "application/pdf",
