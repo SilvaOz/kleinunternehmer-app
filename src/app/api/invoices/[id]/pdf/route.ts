@@ -109,8 +109,9 @@ export async function GET(
       accountHolder: user.company.accountHolder,
     };
 
-    const buffer = await pdf(
-      createElement(InvoicePDF, { invoice: invoiceLean, company }) as Parameters<typeof pdf>[0]
+    type PdfFn = (el: object) => { toBuffer(): Promise<Buffer> };
+    const buffer = await (pdf as unknown as PdfFn)(
+      createElement(InvoicePDF, { invoice: invoiceLean, company })
     ).toBuffer();
 
     const filename = `Rechnung-${invoice.invoiceNumber}.pdf`;
