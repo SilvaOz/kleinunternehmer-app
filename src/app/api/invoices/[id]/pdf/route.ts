@@ -2,7 +2,8 @@ export const runtime = "nodejs";
 
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
-import { renderToBuffer } from "@react-pdf/renderer";
+import { renderToStream } from "@react-pdf/renderer";
+import type { Readable } from "stream";
 import { createElement } from "react";
 import { connectDB } from "@/lib/db";
 import { getOwnerIdFromCookies } from "@/lib/auth";
@@ -111,9 +112,17 @@ export async function GET(
 
     console.log("[pdf] starting render for invoice", invoice.invoiceNumber);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const buffer = await renderToBuffer(
+    const stream = await renderToStream(
       createElement(InvoicePDF, { invoice: invoiceLean, company }) as any
-    );
+    ) as Readable;
+
+    const buffer = await new Promise<Buffer>((resolve, reject) => {
+      const chunks: Buffer[] = [];
+      stream.on("data", (chunk: Buffer) => chunks.push(chunk));
+      stream.on("end", () => resolve(Buffer.concat(chunks)));
+      stream.on("error", reject);
+    });
+
     console.log("[pdf] buffer size", buffer.length);
 
     if (!buffer || buffer.length === 0) {
