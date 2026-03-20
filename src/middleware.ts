@@ -4,7 +4,8 @@ import { getSessionFromRequest } from "@/lib/session";
 const PUBLIC_API_ROUTES = [
   "/api/auth/login",
   "/api/auth/logout",
-  "/api/auth/register", // ← faltaba esta
+  "/api/auth/register",
+  "/api/internal/angebot",
 ];
 
 const PUBLIC_PAGE_ROUTES = ["/login", "/register"];
