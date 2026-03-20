@@ -64,6 +64,15 @@ export default function SettingsPage() {
   const [savingFirma, setSavingFirma] = useState(false);
   const [firmaMsg, setFirmaMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
+  // Section 1b — Rechnungsnummer counter
+  const currentYear = new Date().getFullYear();
+  const [counterYear]               = useState(currentYear);
+  const [counterCurrent, setCounterCurrent]   = useState(0);   // sequence loaded from DB
+  const [counterInput, setCounterInput]       = useState("");   // what user types (next number they want)
+  const [savingCounter, setSavingCounter]     = useState(false);
+  const [counterMsg, setCounterMsg]           = useState<{ ok: boolean; text: string } | null>(null);
+  const [counterLoaded, setCounterLoaded]     = useState(false);
+
   // Section 2 — Password
   const [pwd, setPwd] = useState({ current: "", next: "", confirm: "" });
   const [savingPwd, setSavingPwd] = useState(false);
@@ -76,14 +85,16 @@ export default function SettingsPage() {
   const [deleteMsg, setDeleteMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const deleteInputRef = useRef<HTMLInputElement>(null);
 
-  // Load user
+  // Load user + counter
   useEffect(() => {
-    fetch("/api/auth/me")
-      .then((r) => r.json())
-      .then((res) => {
-        if (res.success && res.data) {
-          setUser(res.data);
-          const c = res.data.company ?? {};
+    Promise.all([
+      fetch("/api/auth/me").then((r) => r.json()),
+      fetch(`/api/counter?year=${currentYear}`).then((r) => r.json()),
+    ])
+      .then(([userRes, counterRes]) => {
+        if (userRes.success && userRes.data) {
+          setUser(userRes.data);
+          const c = userRes.data.company ?? {};
           setFirma({
             name:       c.name       ?? "",
             street:     c.street     ?? "",
@@ -99,10 +110,14 @@ export default function SettingsPage() {
             accountHolder: c.accountHolder ?? "",
           });
         }
+        if (counterRes.success) {
+          setCounterCurrent(counterRes.sequence);
+          setCounterLoaded(true);
+        }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [currentYear]);
 
   // Focus delete input when modal opens
   useEffect(() => {
@@ -170,6 +185,33 @@ export default function SettingsPage() {
     }
   }
 
+  // ── Section 1b: save counter ──
+  async function handleSaveCounter(e: React.FormEvent) {
+    e.preventDefault();
+    const next = parseInt(counterInput, 10);
+    if (isNaN(next) || next < 1) {
+      setCounterMsg({ ok: false, text: "Bitte eine gültige Zahl ≥ 1 eingeben." });
+      return;
+    }
+    // We store sequence = next - 1 (last used), so the next invoice gets `next`
+    const newSequence = next - 1;
+    setSavingCounter(true);
+    setCounterMsg(null);
+    const res = await fetch("/api/counter", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ year: counterYear, sequence: newSequence }),
+    }).then((r) => r.json());
+    setSavingCounter(false);
+    if (res.success) {
+      setCounterCurrent(res.sequence);
+      setCounterInput("");
+      setCounterMsg({ ok: true, text: `Zähler gesetzt. Nächste Rechnung: ${counterYear}-${String(res.sequence + 1).padStart(4, "0")}` });
+    } else {
+      setCounterMsg({ ok: false, text: res.error ?? "Fehler." });
+    }
+  }
+
   function setF(k: keyof typeof firma, v: string) {
     setFirma((f) => ({ ...f, [k]: v }));
   }
@@ -224,6 +266,83 @@ export default function SettingsPage() {
             <div className={styles.formFooter}>
               <button type="submit" className={styles.btnSave} disabled={savingFirma}>
                 {savingFirma ? "Speichern…" : "Speichern"}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* ── Section 1b: Rechnungsnummer ── */}
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <div className={styles.cardTitle}>Rechnungsnummer</div>
+            {counterLoaded && (
+              <span className={styles.emailTag}>
+                aktuell: {counterCurrent === 0 ? "–" : `${counterYear}-${String(counterCurrent).padStart(4, "0")}`}
+              </span>
+            )}
+          </div>
+          <form onSubmit={handleSaveCounter} className={styles.form}>
+            <p style={{ margin: 0, fontSize: 13, color: "#666", lineHeight: 1.6 }}>
+              Legt fest, welche Nummer die <strong style={{ color: "#aaa" }}>nächste</strong> ausgestellte
+              Rechnung erhalten soll. Nützlich beim Umstieg von manueller Nummerierung.
+            </p>
+            <div className={styles.formGrid}>
+              <div>
+                <div className={styles.field}>
+                  <label className={styles.fieldLabel}>NÄCHSTE RECHNUNGSNUMMER</label>
+                  <input
+                    className={styles.fieldInput}
+                    type="number"
+                    min={1}
+                    value={counterInput}
+                    onChange={(e) => { setCounterInput(e.target.value); setCounterMsg(null); }}
+                    placeholder={`z. B. ${counterCurrent + 2}`}
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+              <div style={{ display: "flex", alignItems: "flex-end", paddingBottom: 1 }}>
+                {counterInput && parseInt(counterInput, 10) >= 1 ? (
+                  <div style={{
+                    background: "#0d0d12", border: "1px solid #2a2a36", borderRadius: 8,
+                    padding: "10px 14px", width: "100%", boxSizing: "border-box" as const,
+                  }}>
+                    <div style={{ fontSize: 10, color: "#555", fontFamily: "DM Mono, monospace", textTransform: "uppercase" as const, letterSpacing: "0.09em", marginBottom: 4 }}>
+                      VORSCHAU
+                    </div>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: "#c8f04a", fontFamily: "DM Mono, monospace" }}>
+                      {counterYear}-{String(parseInt(counterInput, 10)).padStart(4, "0")}
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{
+                    background: "#0d0d12", border: "1px solid #1e1e2a", borderRadius: 8,
+                    padding: "10px 14px", width: "100%", boxSizing: "border-box" as const,
+                  }}>
+                    <div style={{ fontSize: 10, color: "#333", fontFamily: "DM Mono, monospace", textTransform: "uppercase" as const, letterSpacing: "0.09em", marginBottom: 4 }}>
+                      VORSCHAU
+                    </div>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: "#333", fontFamily: "DM Mono, monospace" }}>
+                      {counterYear}-????
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {counterInput && parseInt(counterInput, 10) <= counterCurrent && (
+              <div className={styles.msgErr} style={{ fontSize: 11 }}>
+                ⚠ Diese Zahl liegt unter dem aktuellen Zählerstand ({counterCurrent}).
+                Das kann zu doppelten Nummern führen.
+              </div>
+            )}
+            <Msg msg={counterMsg} />
+            <div className={styles.formFooter}>
+              <button
+                type="submit"
+                className={styles.btnSave}
+                disabled={savingCounter || !counterInput || parseInt(counterInput, 10) < 1}
+              >
+                {savingCounter ? "Speichern…" : "Zähler setzen"}
               </button>
             </div>
           </form>
