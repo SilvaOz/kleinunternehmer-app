@@ -49,7 +49,9 @@ interface AngebotBody {
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // 1. Validate API key
   const apiKey = req.headers.get("x-api-key");
-  if (!apiKey || apiKey !== process.env.INTERNAL_API_KEY) {
+  const expectedKey = process.env.INTERNAL_API_KEY;
+  console.log("[angebot] received key:", apiKey?.slice(0, 6), "| expected key set:", !!expectedKey, "| match:", apiKey === expectedKey);
+  if (!apiKey || apiKey !== expectedKey) {
     return NextResponse.json(
       { success: false, error: "Nicht autorisiert" },
       { status: 401 }
