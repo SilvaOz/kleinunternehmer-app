@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./clients.module.css";
 
+type ImportResult = { imported: number; total: number; errors: string[] };
+
 const fmt = (n: number) =>
   new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n);
 
@@ -30,6 +32,7 @@ type Client = {
   city: string;
   country: string;
   email?: string;
+  phone?: string;
 };
 
 type Stats = { umsatz: number; count: number; lastStatus: string | null };
@@ -54,7 +57,14 @@ export default function ClientsPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [editForm, setEditForm] = useState(EMPTY_FORM);
+  const [editSaving, setEditSaving] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const qTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   function load(search: string) {
     setLoading(true);
@@ -116,6 +126,62 @@ export default function ClientsPage() {
     }
   }
 
+  function openEdit(c: Client) {
+    setEditingClient(c);
+    setEditForm({
+      companyName: c.companyName ?? "",
+      contactName: c.contactName ?? "",
+      street: c.street ?? "",
+      zip: c.zip ?? "",
+      city: c.city ?? "",
+      country: c.country ?? "Deutschland",
+      email: c.email ?? "",
+      phone: c.phone ?? "",
+    });
+    setEditError(null);
+  }
+
+  async function handleUpdate(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editingClient) return;
+    if (!editForm.companyName.trim() && !editForm.contactName.trim()) {
+      setEditError("Bitte Name oder Firma angeben.");
+      return;
+    }
+    setEditSaving(true);
+    setEditError(null);
+    const res = await fetch(`/api/clients/${editingClient._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editForm),
+    }).then((r) => r.json());
+    setEditSaving(false);
+    if (res.success && res.data) {
+      setClients((prev) => prev.map((c) => c._id === editingClient._id ? res.data : c));
+      setEditingClient(null);
+    } else {
+      setEditError(res.error ?? "Fehler beim Speichern.");
+    }
+  }
+
+  async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    setImporting(true);
+    setImportResult(null);
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch("/api/clients/import", { method: "POST", body: fd }).then((r) => r.json());
+    setImporting(false);
+    if (res.success) {
+      setImportResult({ imported: res.imported, total: res.total, errors: res.errors ?? [] });
+      load(q);
+    } else {
+      setImportResult({ imported: 0, total: 0, errors: [res.error ?? "Fehler beim Import"] });
+    }
+  }
+
   return (
     <div className={styles.wrap}>
       <div className={styles.pageLabel}>KUNDEN</div>
@@ -133,11 +199,88 @@ export default function ClientsPage() {
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </div>
+            <button
+              className={styles.btnImport}
+              onClick={() => fileInputRef.current?.click()}
+              disabled={importing}
+            >
+              {importing ? "Importieren…" : "CSV importieren"}
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv"
+              style={{ display: "none" }}
+              onChange={handleImport}
+            />
             <button className={styles.btnPrimary} onClick={() => { setShowForm(true); setError(null); }}>
               + Neuer Kunde
             </button>
           </div>
         </div>
+
+        {/* Import result banner */}
+        {importResult && (
+          <div className={importResult.errors.length > 0 && importResult.imported === 0 ? styles.importBannerError : styles.importBanner}>
+            <span>
+              {importResult.imported > 0
+                ? `${importResult.imported} von ${importResult.total} Kunden importiert.`
+                : "Import fehlgeschlagen."}
+              {importResult.errors.length > 0 && ` ${importResult.errors.length} Fehler.`}
+            </span>
+            <button className={styles.importBannerClose} onClick={() => setImportResult(null)}>✕</button>
+          </div>
+        )}
+
+        {/* Inline edit-client form */}
+        {editingClient && (
+          <form className={styles.newForm} onSubmit={handleUpdate}>
+            <div className={styles.newFormTitle}>
+              {editingClient.companyName || editingClient.contactName} bearbeiten
+            </div>
+            <div className={styles.formRow}>
+              <label className={styles.formLabel}>NAME / ANSPRECHPARTNER</label>
+              <input className={styles.formInput} value={editForm.contactName} onChange={(e) => { setEditError(null); setEditForm((f) => ({ ...f, contactName: e.target.value })); }} placeholder="z.B. Maria Muster" />
+            </div>
+            <div className={styles.formRow}>
+              <label className={styles.formLabel}>FIRMA <span className={styles.optionalHint}>(optional)</span></label>
+              <input className={styles.formInput} value={editForm.companyName} onChange={(e) => { setEditError(null); setEditForm((f) => ({ ...f, companyName: e.target.value })); }} placeholder="z.B. Muster GmbH" />
+            </div>
+            <div className={styles.formRow2}>
+              <div className={styles.formRow}>
+                <label className={styles.formLabel}>STRASSE</label>
+                <input className={styles.formInput} value={editForm.street} onChange={(e) => setEditForm((f) => ({ ...f, street: e.target.value }))} placeholder="Musterstraße 1" />
+              </div>
+              <div className={styles.formRow} style={{ maxWidth: 120 }}>
+                <label className={styles.formLabel}>PLZ</label>
+                <input className={styles.formInput} value={editForm.zip} onChange={(e) => setEditForm((f) => ({ ...f, zip: e.target.value }))} placeholder="80331" />
+              </div>
+              <div className={styles.formRow}>
+                <label className={styles.formLabel}>STADT</label>
+                <input className={styles.formInput} value={editForm.city} onChange={(e) => setEditForm((f) => ({ ...f, city: e.target.value }))} placeholder="München" />
+              </div>
+            </div>
+            <div className={styles.formRow2}>
+              <div className={styles.formRow}>
+                <label className={styles.formLabel}>LAND</label>
+                <input className={styles.formInput} value={editForm.country} onChange={(e) => setEditForm((f) => ({ ...f, country: e.target.value }))} placeholder="Deutschland" />
+              </div>
+              <div className={styles.formRow}>
+                <label className={styles.formLabel}>E-MAIL</label>
+                <input className={styles.formInput} type="email" value={editForm.email} onChange={(e) => setEditForm((f) => ({ ...f, email: e.target.value }))} placeholder="info@muster.de" />
+              </div>
+              <div className={styles.formRow}>
+                <label className={styles.formLabel}>TELEFON</label>
+                <input className={styles.formInput} value={editForm.phone} onChange={(e) => setEditForm((f) => ({ ...f, phone: e.target.value }))} placeholder="+49 89 123456" />
+              </div>
+            </div>
+            {editError && <div className={styles.formError}>{editError}</div>}
+            <div className={styles.formActions}>
+              <button type="button" className={styles.btnCancel} onClick={() => setEditingClient(null)}>Abbrechen</button>
+              <button type="submit" className={styles.btnPrimary} disabled={editSaving}>{editSaving ? "Speichern…" : "Änderungen speichern"}</button>
+            </div>
+          </form>
+        )}
 
         {/* Inline new-client form */}
         {showForm && (
@@ -198,7 +341,7 @@ export default function ClientsPage() {
                 const color = avatarColor(name);
                 const s = stats[c._id] ?? { umsatz: 0, count: 0, lastStatus: null };
                 return (
-                  <div key={c._id} className={styles.clientCard} onClick={() => {}}>
+                  <div key={c._id} className={styles.clientCard} onClick={() => { setShowForm(false); openEdit(c); }}>
                     <div className={styles.avatar} style={{ background: color, color: "#111" }}>
                       {initials(name)}
                     </div>

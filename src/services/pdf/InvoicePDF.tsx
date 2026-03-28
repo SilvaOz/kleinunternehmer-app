@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
   Font,
+  Image,
 } from "@react-pdf/renderer";
 import type { IClientSnapshot } from "@/models/Invoice";
 import type { ICompanySettings } from "@/models/User";
@@ -51,17 +52,15 @@ Font.registerHyphenationCallback((word) => [word]);
 // ─────────────────────────────────────────────
 
 const C = {
-  navy:         "#0f1621",   // fondo header
-  navyMid:      "#162030",   // fondo tabla header
-  lime:         "#c8f04a",   // acento principal
-  storno:       "#f04a8c",   // acento storno
-  white:        "#ffffff",
-  offwhite:     "#f7f8fa",   // filas alternas
-  text:         "#1a1b1e",   // texto principal
-  textMid:      "#4a4d5a",   // texto secundario
-  textSoft:     "#8a8d9a",   // labels / hints
-  border:       "#e4e6ee",   // bordes tabla
-  payBg:        "#f0f2f8",   // fondo bloque pago
+  black:    "#111111",
+  yellow:   "#F5C800",
+  white:    "#ffffff",
+  offwhite: "#fafafa",
+  text:     "#1a1b1e",
+  textMid:  "#4a4d5a",
+  textSoft: "#888888",
+  border:   "#cccccc",
+  storno:   "#dc2626",
 } as const;
 
 const PAD = 44;
@@ -78,298 +77,304 @@ const S = StyleSheet.create({
     backgroundColor: C.white,
   },
 
-  // ── Barra lime superior ───────────────────
-  topBar: {
-    height:          4,
-    backgroundColor: C.lime,
-  },
-  topBarStorno: {
-    height:          4,
-    backgroundColor: C.storno,
-  },
-
-  // ── Header ────────────────────────────────
-  header: {
+  // ── Hero / Briefkopf ─────────────────────────────────────────────────
+  hero: {
     flexDirection:     "row",
-    justifyContent:    "space-between",
-    alignItems:        "flex-start",
-    backgroundColor:   C.navy,
+    alignItems:        "center",
+    backgroundColor:   C.white,
     paddingHorizontal: PAD,
-    paddingTop:        28,
-    paddingBottom:     28,
+    paddingTop:        26,
+    paddingBottom:     26,
   },
-  headerLeft: {
-    flex: 1,
-  },
-  companyName: {
-    fontSize:      22,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.white,
-    letterSpacing: 0.8,
-    marginBottom:  6,
-  },
-  companyMeta: {
-    fontSize:    9,
-    color:       "#6a7a8a",
-    lineHeight:  1.6,
-  },
-  headerRight: {
-    alignItems:  "flex-end",
-    paddingLeft: 24,
-  },
-  invoiceLabel: {
-    fontSize:      9,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.lime,
-    letterSpacing: 3,
-    textTransform: "uppercase",
-    marginBottom:  6,
-  },
-  invoiceLabelStorno: {
-    fontSize:      9,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.storno,
-    letterSpacing: 2,
-    textTransform: "uppercase",
-    marginBottom:  6,
-  },
-  invoiceNumber: {
-    fontSize:      24,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.white,
-    letterSpacing: 0.5,
-  },
-  invoiceDate: {
-    fontSize:   9,
-    color:      "#6a7a8a",
-    marginTop:  5,
+  heroStorno: {
+    flexDirection:     "row",
+    alignItems:        "center",
+    backgroundColor:   "#fff5f5",
+    paddingHorizontal: PAD,
+    paddingTop:        26,
+    paddingBottom:     26,
   },
 
-  // ── Body ──────────────────────────────────
+  // Barra de acento bajo el hero
+  heroAccent:       { height: 3, backgroundColor: C.yellow },
+  heroAccentStorno: { height: 3, backgroundColor: C.storno },
+
+  // Logo — sin tarjeta, directo sobre fondo blanco (logo transparente)
+  heroLogoWrap: {
+    width:          300,
+    paddingRight:   32,
+    justifyContent: "center",
+  },
+  heroLogo: {
+    width:      265,
+    height:     150,
+    objectFit:  "contain",
+    alignSelf:  "flex-start",
+  },
+  heroFallback: {
+    fontSize:   22,
+    fontFamily: "Helvetica-Bold",
+    color:      C.black,
+  },
+
+  // Línea vertical de acento entre logo e info
+  heroSeparator: {
+    width:           1,
+    backgroundColor: "#dddddd",
+    marginRight:     28,
+    alignSelf:       "stretch",
+  },
+  heroSeparatorStorno: {
+    width:           1,
+    backgroundColor: C.storno,
+    marginRight:     28,
+    alignSelf:       "stretch",
+  },
+
+  // Columna derecha del hero
+  heroRight: {
+    flex:        1,
+    alignItems:  "flex-start",
+  },
+  heroTag: {
+    fontSize:          8,
+    fontFamily:        "Helvetica-Bold",
+    color:             C.black,
+    backgroundColor:   C.yellow,
+    paddingHorizontal: 8,
+    paddingVertical:   3,
+    borderRadius:      2,
+    alignSelf:         "flex-start",
+    marginBottom:      10,
+    letterSpacing:     0.8,
+  },
+  heroTagStorno: {
+    fontSize:          8,
+    fontFamily:        "Helvetica-Bold",
+    color:             C.white,
+    backgroundColor:   C.storno,
+    paddingHorizontal: 8,
+    paddingVertical:   3,
+    borderRadius:      2,
+    alignSelf:         "flex-start",
+    marginBottom:      10,
+    letterSpacing:     0.8,
+  },
+  heroCompanyName: {
+    fontSize:     16,
+    fontFamily:   "Helvetica-Bold",
+    color:        C.black,
+    marginBottom: 5,
+  },
+  heroMeta: {
+    fontSize:   9.5,
+    color:      C.textMid,
+    lineHeight: 1.75,
+    textAlign:  "left",
+  },
+
+  // ── Body ─────────────────────────────────────────────────────────────
   body: {
     paddingHorizontal: PAD,
-    paddingTop:        28,
-    paddingBottom:     72,
+    paddingTop:        22,
+    paddingBottom:     80,
   },
 
-  // ── Von / An ──────────────────────────────
-  partyRow: {
-    flexDirection:     "row",
-    marginBottom:      24,
-    paddingBottom:     20,
-    borderBottomWidth: 1,
-    borderBottomColor: C.border,
+  // ── Sección superior: Empfänger (izq) + Metadatos (der) ──────────────
+  topSection: {
+    flexDirection: "row",
+    alignItems:    "flex-start",
+    marginBottom:  28,
   },
-  partyCol: { flex: 1 },
-  partySep: {
-    width:            1,
-    backgroundColor:  C.border,
-    marginHorizontal: 28,
+
+  recipientBlock: {
+    flex:            1,
+    marginRight:     24,
+    borderLeftWidth: 3,
+    borderLeftColor: "#aaaaaa",
+    paddingLeft:     10,
   },
-  partyTag: {
-    fontSize:      7.5,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.lime,
-    letterSpacing: 1.8,
-    textTransform: "uppercase",
-    marginBottom:  7,
-    backgroundColor: C.navy,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius:  2,
-    alignSelf:     "flex-start",
+  recipientBlockStorno: {
+    flex:            1,
+    marginRight:     24,
+    borderLeftWidth: 3,
+    borderLeftColor: C.storno,
+    paddingLeft:     10,
   },
-  partyTagStorno: {
-    fontSize:      7.5,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.storno,
-    letterSpacing: 1.8,
-    textTransform: "uppercase",
-    marginBottom:  7,
-    backgroundColor: C.navy,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius:  2,
-    alignSelf:     "flex-start",
+  recipientLabel: {
+    fontSize:      8,
+    color:         C.textSoft,
+    marginBottom:  5,
+    letterSpacing: 0.6,
   },
-  partyName: {
+  recipientName: {
     fontSize:     11,
     fontFamily:   "Helvetica-Bold",
     color:        C.text,
     marginBottom: 3,
   },
-  partyLine: {
-    fontSize:   9,
+  recipientLine: {
+    fontSize:   9.5,
     color:      C.textMid,
-    lineHeight: 1.55,
+    lineHeight: 1.6,
   },
 
-  // ── Fechas ────────────────────────────────
-  datesRow: {
+  // ── Metadatos (columna derecha) ───────────────────────────────────────
+  metaBlock: {
+    width:     210,
+    alignSelf: "flex-start",
+  },
+  metaRow: {
     flexDirection: "row",
-    gap:           8,
-    marginBottom:  24,
+    marginBottom:  5,
   },
-  dateCell: {
-    flex:              1,
-    backgroundColor:   C.offwhite,
-    borderRadius:      5,
-    paddingVertical:   10,
-    paddingHorizontal: 12,
-    borderTopWidth:    2,
-    borderTopColor:    C.lime,
+  metaLabel: {
+    fontSize: 9.5,
+    color:    C.textSoft,
+    width:    120,
   },
-  dateCellStorno: {
-    flex:              1,
-    backgroundColor:   C.offwhite,
-    borderRadius:      5,
-    paddingVertical:   10,
-    paddingHorizontal: 12,
-    borderTopWidth:    2,
-    borderTopColor:    C.storno,
-  },
-  dateCellLabel: {
-    fontSize:      7.5,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.textSoft,
-    letterSpacing: 0.8,
-    textTransform: "uppercase",
-    marginBottom:  4,
-  },
-  dateCellValue: {
-    fontSize:   10,
+  metaValue: {
+    fontSize:   9.5,
     fontFamily: "Helvetica-Bold",
     color:      C.text,
+    flex:       1,
+  },
+  stornoTag: {
+    fontSize:          9,
+    fontFamily:        "Helvetica-Bold",
+    color:             C.white,
+    backgroundColor:   C.storno,
+    paddingHorizontal: 8,
+    paddingVertical:   3,
+    borderRadius:      3,
+    alignSelf:         "flex-start",
+    marginBottom:      10,
   },
 
-  // ── Tabla ─────────────────────────────────
-  table: { marginBottom: 20 },
+  // ── Título sección ────────────────────────────────────────────────────
+  sectionTitle: {
+    fontSize:      11,
+    fontFamily:    "Helvetica-Bold",
+    color:         C.black,
+    marginBottom:  0,
+    letterSpacing: 0.3,
+  },
+
+  // ── Tabla ─────────────────────────────────────────────────────────────
+  table: { marginBottom: 0 },
   tableHeader: {
     flexDirection:     "row",
-    backgroundColor:   C.navyMid,
+    backgroundColor:   "#2d2d2d",
     paddingVertical:   8,
     paddingHorizontal: 10,
-    borderRadius:      4,
-    marginBottom:      2,
+    marginTop:         8,
   },
-  thCell: {
-    fontSize:      7.5,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.lime,
-    letterSpacing: 0.6,
-    textTransform: "uppercase",
+  tableHeaderStorno: {
+    flexDirection:     "row",
+    backgroundColor:   C.storno,
+    paddingVertical:   8,
+    paddingHorizontal: 10,
+    borderWidth:       1,
+    borderColor:       C.storno,
+    marginTop:         8,
   },
+  thCell:       { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.white },
+  thCellStorno: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.white },
   tableRow: {
     flexDirection:     "row",
     paddingVertical:   9,
     paddingHorizontal: 10,
+    borderLeftWidth:   1,
+    borderRightWidth:  1,
     borderBottomWidth: 0.5,
+    borderLeftColor:   C.black,
+    borderRightColor:  C.black,
     borderBottomColor: C.border,
   },
   tableRowAlt: { backgroundColor: C.offwhite },
+  tableFooterRow: {
+    flexDirection:     "row",
+    paddingVertical:   8,
+    paddingHorizontal: 10,
+    borderWidth:       1,
+    borderColor:       C.black,
+    backgroundColor:   C.offwhite,
+  },
   colPos:   { width: "6%" },
   colDesc:  { width: "52%" },
   colQty:   { width: "10%", textAlign: "right" },
   colPrice: { width: "16%", textAlign: "right" },
   colTotal: { width: "16%", textAlign: "right" },
-  tdText:  { fontSize: 9.5, color: C.text },
-  tdTitle: { fontSize: 9.5, fontFamily: "Helvetica-Bold", color: C.text },
-  tdLine:  { fontSize: 8.5, color: C.textSoft, marginTop: 2 },
+  tdText:   { fontSize: 9.5, color: C.text },
+  tdTitle:  { fontSize: 9.5, fontFamily: "Helvetica-Bold", color: C.text },
+  tdLine:   { fontSize: 8.5, color: C.textSoft, marginTop: 2 },
+  tdFooter: { fontSize: 10,  fontFamily: "Helvetica-Bold", color: C.black },
 
-  // ── Totales ───────────────────────────────
-  totalsBlock: {
-    alignSelf:    "flex-end",
-    minWidth:     260,
-    marginBottom: 20,
-  },
-  sumRow: {
-    flexDirection:   "row",
-    justifyContent:  "space-between",
-    paddingVertical: 3,
-  },
-  sumLabel: { fontSize: 9.5, color: C.textSoft },
-  sumValue: { fontSize: 9.5, color: C.textMid },
-  sumDivider: {
-    height:          1,
-    backgroundColor: C.border,
-    marginVertical:  8,
-  },
-
-  // Caja total — navy + lime (máximo contraste)
-  totalBox: {
+  // ── Total en caja oscura ──────────────────────────────────────────────
+  totalBlock: {
     flexDirection:     "row",
     justifyContent:    "space-between",
     alignItems:        "center",
-    backgroundColor:   C.navy,
-    borderRadius:      6,
+    backgroundColor:   "#2d2d2d",
     paddingHorizontal: 14,
-    paddingVertical:   12,
-  },
-  totalBoxStorno: {
-    flexDirection:     "row",
-    justifyContent:    "space-between",
-    alignItems:        "center",
-    backgroundColor:   C.storno,
-    borderRadius:      6,
-    paddingHorizontal: 14,
-    paddingVertical:   12,
+    paddingVertical:   11,
+    marginTop:         16,
+    marginBottom:      18,
+    borderRadius:      3,
   },
   totalLabel: {
-    fontSize:   11,
+    fontSize:   12,
     fontFamily: "Helvetica-Bold",
     color:      C.white,
   },
-  totalValue: {
-    fontSize:   15,
-    fontFamily: "Helvetica-Bold",
-    color:      C.lime,
-  },
-  totalValueStorno: {
-    fontSize:   15,
+  totalAmount: {
+    fontSize:   16,
     fontFamily: "Helvetica-Bold",
     color:      C.white,
   },
 
-  // ── Texto legal ───────────────────────────
+  // ── §19 UStG ─────────────────────────────────────────────────────────
   legalText: {
-    fontSize:     8.5,
-    color:        C.textSoft,
-    fontStyle:    "italic",
+    fontSize:     9,
+    color:        C.textMid,
     marginBottom: 16,
     lineHeight:   1.5,
   },
 
-  // ── Bloque pago ───────────────────────────
+  // ── Bloque de pago ────────────────────────────────────────────────────
   payBlock: {
-    backgroundColor:  C.payBg,
-    borderRadius:     5,
-    padding:          14,
-    borderLeftWidth:  3,
-    borderLeftColor:  C.lime,
-    marginBottom:     16,
+    marginBottom:    20,
+    borderLeftWidth: 3,
+    borderLeftColor: C.border,
+    paddingLeft:     10,
   },
-  payBlockStorno: {
-    backgroundColor:  C.payBg,
-    borderRadius:     5,
-    padding:          14,
-    borderLeftWidth:  3,
-    borderLeftColor:  C.storno,
-    marginBottom:     16,
+  payHint: {
+    fontSize:     9.5,
+    color:        C.textMid,
+    lineHeight:   1.6,
+    marginBottom: 8,
   },
-  payTitle: {
-    fontSize:      8,
-    fontFamily:    "Helvetica-Bold",
-    color:         C.navy,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    marginBottom:  8,
+  payRow: {
+    flexDirection: "row",
+    marginBottom:  4,
   },
-  payRow: { flexDirection: "row", marginBottom: 3 },
-  payLabel: { fontSize: 9, color: C.textSoft, width: 52 },
-  payValue: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.text, flex: 1 },
-  payHint:  { fontSize: 8.5, color: C.textSoft, marginTop: 8, lineHeight: 1.5 },
+  payLabel: { fontSize: 9.5, color: C.textSoft, width: 110 },
+  payValue: { fontSize: 9.5, fontFamily: "Helvetica-Bold", color: C.text, flex: 1 },
 
-  // ── Watermark STORNIERT ───────────────────
+  // ── Cierre ────────────────────────────────────────────────────────────
+  closingText: {
+    fontSize:     9.5,
+    color:        C.textMid,
+    lineHeight:   1.6,
+    marginBottom: 4,
+  },
+  closingName: {
+    fontSize:   10,
+    fontFamily: "Helvetica-Bold",
+    color:      C.black,
+  },
+
+  // ── Watermark STORNIERT ───────────────────────────────────────────────
   watermark: {
     position:   "absolute",
     top:        280,
@@ -386,7 +391,7 @@ const S = StyleSheet.create({
     textAlign:  "center",
   },
 
-  // ── Footer ────────────────────────────────
+  // ── Footer ────────────────────────────────────────────────────────────
   footer: {
     position:       "absolute",
     bottom:         18,
@@ -427,9 +432,6 @@ export default function InvoicePDF({ invoice, company }: InvoicePDFProps) {
     ? invoice.footerText
     : `${company.name} · ${company.street} · ${company.zip} ${company.city}`;
 
-  const dateTag  = isStorno ? S.dateCellStorno : S.dateCell;
-  const partyTag = isStorno ? S.partyTagStorno  : S.partyTag;
-
   return (
     <Document
       title={`${isStorno ? "Stornorechnung" : "Rechnung"} ${invoice.invoiceNumber}`}
@@ -438,113 +440,110 @@ export default function InvoicePDF({ invoice, company }: InvoicePDFProps) {
     >
       <Page size="A4" style={S.page}>
 
-        {/* ── Barra de color superior ── */}
-        <View style={isStorno ? S.topBarStorno : S.topBar} />
+        {/* ── Hero / Briefkopf ── */}
+        <View style={isStorno ? S.heroStorno : S.hero}>
 
-        {/* ── Header ── */}
-        <View style={S.header}>
-          {/* Izquierda: empresa */}
-          <View style={S.headerLeft}>
-            <Text style={S.companyName}>{company.name}</Text>
-            <Text style={S.companyMeta}>
-              {company.street}{"  ·  "}{company.zip} {company.city}
-            </Text>
-            {company.email && (
-              <Text style={S.companyMeta}>{company.email}</Text>
-            )}
-            {company.taxNumber && (
-              <Text style={S.companyMeta}>St.-Nr. {company.taxNumber}</Text>
+          {/* Logo directo sobre blanco — sin tarjeta gris */}
+          <View style={S.heroLogoWrap}>
+            {company.logoUrl ? (
+              <Image src={company.logoUrl} style={S.heroLogo} />
+            ) : (
+              <Text style={S.heroFallback}>{company.name}</Text>
             )}
           </View>
 
-          {/* Derecha: tipo + número */}
-          <View style={S.headerRight}>
-            <Text style={isStorno ? S.invoiceLabelStorno : S.invoiceLabel}>
-              {isStorno ? "Stornorechnung" : "Rechnung"}
+          {/* Línea vertical de acento */}
+          <View style={isStorno ? S.heroSeparatorStorno : S.heroSeparator} />
+
+          {/* Datos empresa */}
+          <View style={S.heroRight}>
+            <Text style={isStorno ? S.heroTagStorno : S.heroTag}>
+              {isStorno ? "STORNORECHNUNG" : "RECHNUNG"}
             </Text>
-            <Text style={S.invoiceNumber}>{invoice.invoiceNumber}</Text>
-            {invoice.issuedAt && (
-              <Text style={S.invoiceDate}>
-                {formatDateDE(new Date(invoice.issuedAt))}
-              </Text>
+            <Text style={S.heroCompanyName}>{company.name}</Text>
+            <Text style={S.heroMeta}>{company.street}</Text>
+            <Text style={S.heroMeta}>{company.zip} {company.city}</Text>
+            {company.taxNumber && (
+              <Text style={S.heroMeta}>Steuernummer: {company.taxNumber}</Text>
+            )}
+            {company.iban && (
+              <Text style={S.heroMeta}>IBAN: {company.iban}</Text>
+            )}
+            {company.bic && (
+              <Text style={S.heroMeta}>BIC: {company.bic}</Text>
             )}
           </View>
         </View>
 
+        {/* Barra de acento bajo el hero */}
+        <View style={isStorno ? S.heroAccentStorno : S.heroAccent} />
+
         {/* ── Body ── */}
         <View style={S.body}>
 
-          {/* ── Von / An ── */}
-          <View style={S.partyRow}>
-            <View style={S.partyCol}>
-              <Text style={partyTag}>Von</Text>
-              <Text style={S.partyName}>{company.name}</Text>
-              <Text style={S.partyLine}>{company.street}</Text>
-              <Text style={S.partyLine}>{company.zip} {company.city}</Text>
-              <Text style={S.partyLine}>{company.country}</Text>
-              {company.email     && <Text style={S.partyLine}>{company.email}</Text>}
-              {company.phone     && <Text style={S.partyLine}>{company.phone}</Text>}
-              {company.taxNumber && <Text style={S.partyLine}>St.-Nr.: {company.taxNumber}</Text>}
-            </View>
+          {/* ── Sección superior: Empfänger (izq) + Metadatos (der) ── */}
+          <View style={S.topSection}>
 
-            <View style={S.partySep} />
-
-            <View style={S.partyCol}>
-              <Text style={partyTag}>An</Text>
+            {/* Empfänger con acento izquierdo */}
+            <View style={isStorno ? S.recipientBlockStorno : S.recipientBlock}>
+              <Text style={S.recipientLabel}>EMPFÄNGER</Text>
               {snapshot ? (
                 <>
-                  <Text style={S.partyName}>{snapshotName(snapshot)}</Text>
+                  <Text style={S.recipientName}>{snapshotName(snapshot)}</Text>
                   {snapshot.companyName && snapshot.contactName && (
-                    <Text style={S.partyLine}>{snapshot.contactName}</Text>
+                    <Text style={S.recipientLine}>{snapshot.contactName}</Text>
                   )}
-                  <Text style={S.partyLine}>{snapshot.street}</Text>
-                  <Text style={S.partyLine}>{snapshot.zip} {snapshot.city}</Text>
-                  <Text style={S.partyLine}>{snapshot.country}</Text>
-                  {snapshot.email && <Text style={S.partyLine}>{snapshot.email}</Text>}
+                  <Text style={S.recipientLine}>{snapshot.street}</Text>
+                  <Text style={S.recipientLine}>{snapshot.zip} {snapshot.city}</Text>
+                  {snapshot.country && (
+                    <Text style={S.recipientLine}>{snapshot.country}</Text>
+                  )}
                 </>
               ) : (
-                <Text style={S.partyLine}>–</Text>
+                <Text style={S.recipientLine}>–</Text>
+              )}
+            </View>
+
+            {/* Metadatos: número, fecha, vencimiento */}
+            <View style={S.metaBlock}>
+              {isStorno && (
+                <Text style={S.stornoTag}>STORNORECHNUNG</Text>
+              )}
+              <View style={S.metaRow}>
+                <Text style={S.metaLabel}>Rechnungsnummer:</Text>
+                <Text style={S.metaValue}>{invoice.invoiceNumber}</Text>
+              </View>
+              <View style={S.metaRow}>
+                <Text style={S.metaLabel}>Rechnungsdatum:</Text>
+                <Text style={S.metaValue}>
+                  {invoice.issuedAt ? formatDateDE(new Date(invoice.issuedAt)) : "–"}
+                </Text>
+              </View>
+              {invoice.dueAt && (
+                <View style={S.metaRow}>
+                  <Text style={S.metaLabel}>Fällig bis:</Text>
+                  <Text style={S.metaValue}>
+                    {formatDateDE(new Date(invoice.dueAt))}
+                  </Text>
+                </View>
               )}
             </View>
           </View>
 
-          {/* ── Fechas ── */}
-          <View style={S.datesRow}>
-            <View style={dateTag}>
-              <Text style={S.dateCellLabel}>Rechnungsdatum</Text>
-              <Text style={S.dateCellValue}>
-                {invoice.issuedAt ? formatDateDE(new Date(invoice.issuedAt)) : "–"}
-              </Text>
-            </View>
-            <View style={dateTag}>
-              <Text style={S.dateCellLabel}>Leistungsdatum</Text>
-              <Text style={S.dateCellValue}>
-                {invoice.issuedAt ? formatDateDE(new Date(invoice.issuedAt)) : "–"}
-              </Text>
-            </View>
-            <View style={dateTag}>
-              <Text style={S.dateCellLabel}>Fällig bis</Text>
-              <Text style={S.dateCellValue}>
-                {invoice.dueAt ? formatDateDE(new Date(invoice.dueAt)) : "–"}
-              </Text>
-            </View>
-          </View>
+          {/* ── Título + Tabla ── */}
+          <Text style={S.sectionTitle}>Erbrachte Leistungen</Text>
 
-          {/* ── Tabla ── */}
           <View style={S.table}>
-            <View style={S.tableHeader}>
-              <Text style={[S.thCell, S.colPos]}>Pos.</Text>
-              <Text style={[S.thCell, S.colDesc]}>Bezeichnung</Text>
-              <Text style={[S.thCell, S.colQty]}>Menge</Text>
-              <Text style={[S.thCell, S.colPrice]}>Einzelpreis</Text>
-              <Text style={[S.thCell, S.colTotal]}>Betrag</Text>
+            <View style={isStorno ? S.tableHeaderStorno : S.tableHeader}>
+              <Text style={[isStorno ? S.thCellStorno : S.thCell, S.colPos]}>Pos.</Text>
+              <Text style={[isStorno ? S.thCellStorno : S.thCell, S.colDesc]}>Leistung</Text>
+              <Text style={[isStorno ? S.thCellStorno : S.thCell, S.colQty]}>Menge</Text>
+              <Text style={[isStorno ? S.thCellStorno : S.thCell, S.colPrice]}>Einzelpreis</Text>
+              <Text style={[isStorno ? S.thCellStorno : S.thCell, S.colTotal]}>Betrag</Text>
             </View>
 
             {invoice.items.map((item, idx) => (
-              <View
-                key={idx}
-                style={[S.tableRow, idx % 2 === 1 ? S.tableRowAlt : {}]}
-              >
+              <View key={idx} style={[S.tableRow, idx % 2 === 1 ? S.tableRowAlt : {}]}>
                 <Text style={[S.tdText, S.colPos]}>{idx + 1}</Text>
                 <View style={S.colDesc}>
                   <Text style={S.tdTitle}>{item.title}</Text>
@@ -559,44 +558,35 @@ export default function InvoicePDF({ invoice, company }: InvoicePDFProps) {
                 </Text>
               </View>
             ))}
+
+            <View style={S.tableFooterRow}>
+              <Text style={[S.tdFooter, S.colPos]}></Text>
+              <Text style={[S.tdFooter, S.colDesc]}>Gesamt</Text>
+              <Text style={[S.tdFooter, S.colQty]}></Text>
+              <Text style={[S.tdFooter, S.colPrice]}></Text>
+              <Text style={[S.tdFooter, S.colTotal]}>{formatEUR(invoice.total)}</Text>
+            </View>
           </View>
 
-          {/* ── Totales ── */}
-          <View style={S.totalsBlock}>
-            <View style={S.sumRow}>
-              <Text style={S.sumLabel}>Zwischensumme</Text>
-              <Text style={S.sumValue}>{formatEUR(invoice.subtotal)}</Text>
-            </View>
-            <View style={S.sumRow}>
-              <Text style={S.sumLabel}>MwSt. 0 % (§19 UStG)</Text>
-              <Text style={S.sumValue}>{formatEUR(0)}</Text>
-            </View>
-            <View style={S.sumDivider} />
-            <View style={isStorno ? S.totalBoxStorno : S.totalBox}>
-              <Text style={S.totalLabel}>Gesamtbetrag</Text>
-              <Text style={isStorno ? S.totalValueStorno : S.totalValue}>
-                {formatEUR(invoice.total)}
-              </Text>
-            </View>
+          {/* ── Gesamtbetrag en caja amarilla ── */}
+          <View style={S.totalBlock}>
+            <Text style={S.totalLabel}>Gesamtbetrag</Text>
+            <Text style={S.totalAmount}>{formatEUR(invoice.total)} EUR</Text>
           </View>
 
           {/* ── §19 UStG ── */}
           <Text style={S.legalText}>{invoice.kleinunternehmerText}</Text>
 
-          {/* ── Bloque pago ── */}
-          {!isStorno && (company.iban || company.bic || company.bankName) && (
+          {/* ── Información de pago ── */}
+          {!isStorno && (company.iban || company.bic) && (
             <View style={S.payBlock}>
-              <Text style={S.payTitle}>Zahlungsinformationen</Text>
-              <View style={S.payRow}>
-                <Text style={S.payLabel}>Empfänger:</Text>
-                <Text style={S.payValue}>
-                  {company.accountHolder || company.name}
-                </Text>
-              </View>
-              {company.bankName && (
+              <Text style={S.payHint}>
+                Bitte überweisen Sie den Gesamtbetrag auf folgendes Konto:
+              </Text>
+              {(company.accountHolder || company.name) && (
                 <View style={S.payRow}>
-                  <Text style={S.payLabel}>Bank:</Text>
-                  <Text style={S.payValue}>{company.bankName}</Text>
+                  <Text style={S.payLabel}>Kontoinhaber:</Text>
+                  <Text style={S.payValue}>{company.accountHolder || company.name}</Text>
                 </View>
               )}
               {company.iban && (
@@ -611,13 +601,14 @@ export default function InvoicePDF({ invoice, company }: InvoicePDFProps) {
                   <Text style={S.payValue}>{company.bic}</Text>
                 </View>
               )}
-              <Text style={S.payHint}>
-                Bitte überweisen Sie {formatEUR(invoice.total)} unter Angabe der
-                Rechnungsnummer {invoice.invoiceNumber} bis zum{" "}
-                {invoice.dueAt ? formatDateDE(new Date(invoice.dueAt)) : "–"}.
-              </Text>
             </View>
           )}
+
+          {/* ── Cierre ── */}
+          <Text style={S.closingText}>
+            Herzlichen Dank für Ihr Vertrauen und die Zusammenarbeit!
+          </Text>
+          <Text style={S.closingName}>{company.accountHolder || company.name}</Text>
 
         </View>
 

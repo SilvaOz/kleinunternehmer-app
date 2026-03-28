@@ -120,14 +120,90 @@
   border-radius: 10px;
   padding: 16px 20px;
 }
+.recipientLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
 .recipientLabel {
   font-size: 10px;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: #555;
   font-family: 'DM Mono', monospace;
-  margin-bottom: 8px;
 }
+.btnEditSnap {
+  font-size: 11px;
+  color: #888;
+  background: none;
+  border: 1px solid #2a2a36;
+  border-radius: 5px;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.btnEditSnap:hover { color: #ccc; border-color: #555; }
+
+/* ── Snap edit form ── */
+.snapForm {
+  background: #0d0d12;
+  border: 1px solid #1a1a24;
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.snapFormTitle {
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+}
+.snapRow { display: flex; gap: 12px; }
+.snapField { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.snapLabel {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+}
+.snapInput {
+  background: #111118;
+  border: 1px solid #2a2a36;
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 13px;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.snapInput:focus { border-color: #555; }
+.snapActions { display: flex; gap: 8px; justify-content: flex-end; }
+.btnCancel {
+  padding: 8px 16px;
+  border-radius: 7px;
+  background: transparent;
+  border: 1px solid #2a2a36;
+  color: #888;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btnCancel:hover { border-color: #555; color: #ccc; }
+.btnSave {
+  padding: 8px 18px;
+  border-radius: 7px;
+  background: #c8f04a;
+  border: none;
+  color: #111;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btnSave:disabled { opacity: 0.5; cursor: not-allowed; }
 .recipientName {
   font-size: 15px;
   font-weight: 700;

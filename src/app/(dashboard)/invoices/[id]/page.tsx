@@ -24,6 +24,14 @@ const STATUS_CFG: Record<string, { label: string; color: string; bg: string }> =
 };
 
 type InvoiceItem = { title: string; qty: number; unitPrice: number; lines?: string[] };
+type SnapForm = {
+  companyName: string;
+  contactName: string;
+  street: string;
+  zip: string;
+  city: string;
+  country: string;
+};
 type Invoice = {
   _id: string;
   invoiceNumber: string;
@@ -58,6 +66,12 @@ export default function InvoiceDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [editingSnap, setEditingSnap] = useState(false);
+  const [snapForm, setSnapForm] = useState<SnapForm>({ companyName: "", contactName: "", street: "", zip: "", city: "", country: "Deutschland" });
+  const [snapSaving, setSnapSaving] = useState(false);
+  const [editingNumber, setEditingNumber] = useState(false);
+  const [numberInput, setNumberInput] = useState("");
+  const [numberSaving, setNumberSaving] = useState(false);
 
   useEffect(() => {
     fetch(`/api/invoices/${id}`)
@@ -79,6 +93,57 @@ export default function InvoiceDetailPage() {
       setInvoice(res.data);
     } else {
       setError(res.error ?? "Aktion fehlgeschlagen.");
+    }
+  }
+
+  function openSnapEdit() {
+    const s = invoice?.clientSnapshot;
+    setSnapForm({
+      companyName: s?.companyName ?? "",
+      contactName: s?.contactName ?? "",
+      street: s?.street ?? "",
+      zip: s?.zip ?? "",
+      city: s?.city ?? "",
+      country: s?.country ?? "Deutschland",
+    });
+    setEditingSnap(true);
+  }
+
+  async function saveSnap(e: React.FormEvent) {
+    e.preventDefault();
+    setSnapSaving(true);
+    setError(null);
+    const res = await fetch(`/api/invoices/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ clientSnapshot: snapForm }),
+    }).then((r) => r.json());
+    setSnapSaving(false);
+    if (res.success && res.data) {
+      setInvoice(res.data);
+      setEditingSnap(false);
+    } else {
+      setError(res.error ?? "Fehler beim Speichern.");
+    }
+  }
+
+  async function saveInvoiceNumber(e: React.FormEvent) {
+    e.preventDefault();
+    const num = numberInput.trim();
+    if (!num) return;
+    setNumberSaving(true);
+    setError(null);
+    const res = await fetch(`/api/invoices/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ invoiceNumber: num }),
+    }).then((r) => r.json());
+    setNumberSaving(false);
+    if (res.success && res.data) {
+      setInvoice(res.data);
+      setEditingNumber(false);
+    } else {
+      setError(res.error ?? "Fehler beim Speichern.");
     }
   }
 
@@ -152,7 +217,34 @@ export default function InvoiceDetailPage() {
           <div className={styles.invHeader}>
             <div>
               <div className={styles.invLabel}>Rechnung</div>
-              <div className={styles.invNumber}>{invoice.invoiceNumber}</div>
+              {editingNumber ? (
+                <form onSubmit={saveInvoiceNumber} style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
+                  <input
+                    autoFocus
+                    className={styles.snapInput}
+                    style={{ fontSize: 20, fontWeight: 700, width: 160, padding: "4px 8px" }}
+                    value={numberInput}
+                    onChange={(e) => setNumberInput(e.target.value)}
+                  />
+                  <button type="submit" className={styles.btnSave} disabled={numberSaving} style={{ padding: "4px 12px" }}>
+                    {numberSaving ? "…" : "OK"}
+                  </button>
+                  <button type="button" className={styles.btnCancel} onClick={() => setEditingNumber(false)} style={{ padding: "4px 10px" }}>
+                    ✕
+                  </button>
+                </form>
+              ) : (
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div className={styles.invNumber}>{invoice.invoiceNumber}</div>
+                  <button
+                    className={styles.btnEditSnap}
+                    onClick={() => { setNumberInput(invoice.invoiceNumber); setEditingNumber(true); }}
+                    title="Rechnungsnummer bearbeiten"
+                  >
+                    ✎
+                  </button>
+                </div>
+              )}
             </div>
             <div className={styles.invHeaderRight}>
               <span className={styles.statusBadge} style={{ color: cfg.color, background: cfg.bg }}>
@@ -197,12 +289,54 @@ export default function InvoiceDetailPage() {
           </div>
 
           {/* Client snapshot */}
-          {snap && (
+          {snap && !editingSnap && (
             <div className={styles.recipientBox}>
-              <div className={styles.recipientLabel}>EMPFÄNGER</div>
+              <div className={styles.recipientLabelRow}>
+                <div className={styles.recipientLabel}>EMPFÄNGER</div>
+                <button className={styles.btnEditSnap} onClick={openSnapEdit}>Bearbeiten</button>
+              </div>
               <div className={styles.recipientName}>{snap.companyName || snap.contactName}</div>
               {addrLine && <div className={styles.recipientAddr}>{addrLine}</div>}
             </div>
+          )}
+          {editingSnap && (
+            <form className={styles.snapForm} onSubmit={saveSnap}>
+              <div className={styles.snapFormTitle}>Empfänger bearbeiten</div>
+              <div className={styles.snapRow}>
+                <div className={styles.snapField}>
+                  <label className={styles.snapLabel}>FIRMA</label>
+                  <input className={styles.snapInput} value={snapForm.companyName} onChange={(e) => setSnapForm((f) => ({ ...f, companyName: e.target.value }))} placeholder="Firma GmbH" />
+                </div>
+                <div className={styles.snapField}>
+                  <label className={styles.snapLabel}>NAME</label>
+                  <input className={styles.snapInput} value={snapForm.contactName} onChange={(e) => setSnapForm((f) => ({ ...f, contactName: e.target.value }))} placeholder="Max Mustermann" />
+                </div>
+              </div>
+              <div className={styles.snapRow}>
+                <div className={styles.snapField} style={{ flex: 2 }}>
+                  <label className={styles.snapLabel}>STRASSE</label>
+                  <input className={styles.snapInput} value={snapForm.street} onChange={(e) => setSnapForm((f) => ({ ...f, street: e.target.value }))} placeholder="Musterstraße 1" />
+                </div>
+                <div className={styles.snapField} style={{ flex: 1 }}>
+                  <label className={styles.snapLabel}>PLZ</label>
+                  <input className={styles.snapInput} value={snapForm.zip} onChange={(e) => setSnapForm((f) => ({ ...f, zip: e.target.value }))} placeholder="80331" />
+                </div>
+              </div>
+              <div className={styles.snapRow}>
+                <div className={styles.snapField}>
+                  <label className={styles.snapLabel}>STADT</label>
+                  <input className={styles.snapInput} value={snapForm.city} onChange={(e) => setSnapForm((f) => ({ ...f, city: e.target.value }))} placeholder="München" />
+                </div>
+                <div className={styles.snapField}>
+                  <label className={styles.snapLabel}>LAND</label>
+                  <input className={styles.snapInput} value={snapForm.country} onChange={(e) => setSnapForm((f) => ({ ...f, country: e.target.value }))} placeholder="Deutschland" />
+                </div>
+              </div>
+              <div className={styles.snapActions}>
+                <button type="button" className={styles.btnCancel} onClick={() => setEditingSnap(false)}>Abbrechen</button>
+                <button type="submit" className={styles.btnSave} disabled={snapSaving}>{snapSaving ? "Speichern…" : "Speichern"}</button>
+              </div>
+            </form>
           )}
 
           {/* Items table */}

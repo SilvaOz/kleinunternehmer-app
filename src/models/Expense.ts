@@ -14,11 +14,6 @@ export type ExpenseCategory =
   | "services"
   | "other";
 
-export interface IReceiptMeta {
-  url?: string;
-  sha256?: string;
-}
-
 export interface IExpense extends Document {
   ownerId: mongoose.Types.ObjectId;
   date: Date;
@@ -29,7 +24,8 @@ export interface IExpense extends Document {
   businessUsePct: number;
   paid: boolean;
   paidAt?: Date;
-  receipt?: IReceiptMeta;
+  receiptFileId?: mongoose.Types.ObjectId;
+  receiptFilename?: string;
   notes?: string;
   // virtual
   amountBusiness: number;
@@ -94,14 +90,12 @@ const ExpenseSchema = new Schema<IExpense>(
     paidAt: {
       type: Date,
     },
-    receipt: {
-      type: new Schema<IReceiptMeta>(
-        {
-          url:    { type: String, trim: true },
-          sha256: { type: String, trim: true },
-        },
-        { _id: false }
-      ),
+    receiptFileId: {
+      type: Schema.Types.ObjectId,
+    },
+    receiptFilename: {
+      type:  String,
+      trim:  true,
     },
     notes: {
       type: String,

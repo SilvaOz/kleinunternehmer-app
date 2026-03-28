@@ -90,6 +90,54 @@
 }
 .btnCancel:hover { border-color: #555; color: #ccc; }
 
+/* ── Import button ── */
+.btnImport {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: none;
+  border: 1px solid #2e2e3c;
+  color: #aaa;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btnImport:hover { border-color: #c8f04a; color: #c8f04a; }
+.btnImport:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Import banner ── */
+.importBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #0f1f0a;
+  border-bottom: 1px solid #1e3a10;
+  color: #c8f04a;
+  font-size: 14px;
+}
+.importBannerError {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #1f0a0a;
+  border-bottom: 1px solid #3a1010;
+  color: #f0215d;
+  font-size: 14px;
+}
+.importBannerClose {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.6;
+  padding: 0 4px;
+}
+.importBannerClose:hover { opacity: 1; }
+
 /* ── Inline form ── */
 .newForm {
   border-bottom: 1px solid #1a1a24;

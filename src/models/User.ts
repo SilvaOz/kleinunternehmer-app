@@ -19,6 +19,7 @@ export interface ICompanySettings {
   bic?: string;
   bankName?: string;
   accountHolder?: string;  // Nombre real del titular (obligatorio para SEPA)
+  logoUrl?: string;        // Data URI o path absoluto para el logo en facturas PDF
 }
 
 export interface IUser extends Document {
@@ -50,6 +51,7 @@ const CompanySettingsSchema = new Schema<ICompanySettings>(
     bic:        { type: String, trim: true },
     bankName:      { type: String, trim: true },
     accountHolder: { type: String, trim: true },
+    logoUrl:       { type: String, trim: true },
   },
   { _id: false }
 );

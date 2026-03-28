@@ -119,6 +119,7 @@ ClientSchema.pre("validate", function (next) {
 ClientSchema.index({ ownerId: 1, isActive: 1 });
 ClientSchema.index({ ownerId: 1, companyName: 1 });
 ClientSchema.index({ ownerId: 1, contactName: 1 });
+ClientSchema.index({ ownerId: 1, email: 1 });
 
 // ─────────────────────────────────────────────
 // Modelo (singleton para Next.js HMR)

@@ -206,7 +206,7 @@ export default function SettingsPage() {
     if (res.success) {
       setCounterCurrent(res.sequence);
       setCounterInput("");
-      setCounterMsg({ ok: true, text: `Zähler gesetzt. Nächste Rechnung: ${counterYear}-${String(res.sequence + 1).padStart(4, "0")}` });
+      setCounterMsg({ ok: true, text: `Zähler gesetzt. Nächste Rechnung: ${counterYear}-${String(res.sequence + 1).padStart(3, "0")}` });
     } else {
       setCounterMsg({ ok: false, text: res.error ?? "Fehler." });
     }
@@ -277,7 +277,7 @@ export default function SettingsPage() {
             <div className={styles.cardTitle}>Rechnungsnummer</div>
             {counterLoaded && (
               <span className={styles.emailTag}>
-                aktuell: {counterCurrent === 0 ? "–" : `${counterYear}-${String(counterCurrent).padStart(4, "0")}`}
+                aktuell: {counterCurrent === 0 ? "–" : `${counterYear}-${String(counterCurrent).padStart(3, "0")}`}
               </span>
             )}
           </div>
@@ -311,7 +311,7 @@ export default function SettingsPage() {
                       VORSCHAU
                     </div>
                     <div style={{ fontSize: 16, fontWeight: 700, color: "#c8f04a", fontFamily: "DM Mono, monospace" }}>
-                      {counterYear}-{String(parseInt(counterInput, 10)).padStart(4, "0")}
+                      {counterYear}-{String(parseInt(counterInput, 10)).padStart(3, "0")}
                     </div>
                   </div>
                 ) : (

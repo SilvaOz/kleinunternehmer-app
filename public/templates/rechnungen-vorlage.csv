@@ -1,0 +1,5 @@
+rechnungsnummer,kunde,betrag,rechnungsdatum,zahlungsdatum,status
+Rechnung-2025-001,Doris Reinholz,599.00,15.01.2025,20.01.2025,paid
+Rechnung-2025-002,Carola Siebert,900.00,01.02.2025,10.02.2025,paid
+Rechnung-2025-003,Dirk Wehmeyer,1500.00,05.03.2025,12.03.2025,paid
+Rechnung-2026-001,Melanie Nitsch,599.00,10.01.2026,,issued

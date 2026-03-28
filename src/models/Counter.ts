@@ -76,11 +76,11 @@ CounterSchema.statics.nextSequence = async function (
 
 // ─────────────────────────────────────────────
 // Utilidad: formatear número de factura
-// Ejemplo: year=2026, sequence=1 → "2026-0001"
+// Ejemplo: year=2026, sequence=1 → "2026-001"
 // ─────────────────────────────────────────────
 
 export function formatInvoiceNumber(year: number, sequence: number): string {
-  return `${year}-${String(sequence).padStart(4, "0")}`;
+  return `${year}-${String(sequence).padStart(3, "0")}`;
 }
 
 // ─────────────────────────────────────────────

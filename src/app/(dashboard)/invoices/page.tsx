@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import styles from "./invoices.module.css";
 
+type ImportResult = { imported: number; total: number; errors: string[] };
+
 const fmt = (n: number) =>
   new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n);
 
@@ -31,7 +33,11 @@ export default function InvoicesPage() {
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [loading, setLoading] = useState(true);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const qTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fileInputRef    = useRef<HTMLInputElement | null>(null);
+  const pdfInputRef     = useRef<HTMLInputElement | null>(null);
 
   function load(search: string) {
     setLoading(true);
@@ -68,6 +74,42 @@ export default function InvoicesPage() {
     { key: "canceled", label: "Canceled" },
   ];
 
+  async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    setImporting(true);
+    setImportResult(null);
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch("/api/invoices/import", { method: "POST", body: fd }).then((r) => r.json());
+    setImporting(false);
+    if (res.success) {
+      setImportResult({ imported: res.imported, total: res.total, errors: res.errors ?? [] });
+      load(q);
+    } else {
+      setImportResult({ imported: 0, total: 0, errors: [res.error ?? "Fehler beim Import"] });
+    }
+  }
+
+  async function handlePdfImport(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
+    e.target.value = "";
+    setImporting(true);
+    setImportResult(null);
+    const fd = new FormData();
+    files.forEach((f) => fd.append("files", f));
+    const res = await fetch("/api/invoices/import-pdf", { method: "POST", body: fd }).then((r) => r.json());
+    setImporting(false);
+    if (res.success) {
+      setImportResult({ imported: res.imported, total: res.total, errors: res.errors ?? [] });
+      load(q);
+    } else {
+      setImportResult({ imported: 0, total: 0, errors: [res.error ?? "Fehler beim PDF-Import"] });
+    }
+  }
+
   return (
     <div className={styles.wrap}>
       <div className={styles.pageLabel}>RECHNUNGEN – LISTE</div>
@@ -88,11 +130,66 @@ export default function InvoicesPage() {
             <a href="/api/reports/export?type=eur" className={styles.btnSecondary}>
               ↓ Export
             </a>
+            <a href="/templates/rechnungen-vorlage.csv" download className={styles.btnSecondary}>
+              ↓ Vorlage CSV
+            </a>
+            <button
+              className={styles.btnSecondary}
+              onClick={() => pdfInputRef.current?.click()}
+              disabled={importing}
+              style={{ cursor: importing ? "not-allowed" : "pointer", fontWeight: 600 }}
+            >
+              {importing ? "Importieren…" : "↑ PDFs importieren"}
+            </button>
+            <input
+              ref={pdfInputRef}
+              type="file"
+              accept=".pdf"
+              multiple
+              style={{ display: "none" }}
+              onChange={handlePdfImport}
+            />
+            <button
+              className={styles.btnSecondary}
+              onClick={() => fileInputRef.current?.click()}
+              disabled={importing}
+              style={{ cursor: importing ? "not-allowed" : "pointer" }}
+            >
+              {importing ? "Importieren…" : "↑ CSV importieren"}
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv"
+              style={{ display: "none" }}
+              onChange={handleImport}
+            />
             <Link href="/invoices/new" className={styles.btnPrimary}>
               + Neue Rechnung
             </Link>
           </div>
         </div>
+
+        {/* Import result banner */}
+        {importResult && (
+          <div className={importResult.imported === 0 ? styles.importBannerError : styles.importBanner}>
+            <div>
+              <div>
+                {importResult.imported > 0
+                  ? `${importResult.imported} von ${importResult.total} Rechnungen importiert.`
+                  : "Import fehlgeschlagen."}
+                {importResult.errors.length > 0 && ` ${importResult.errors.length} Fehler.`}
+              </div>
+              {importResult.errors.length > 0 && (
+                <div className={styles.importBannerErrors}>
+                  {importResult.errors.slice(0, 5).join(" · ")}
+                  {importResult.errors.length > 5 && ` · +${importResult.errors.length - 5} weitere`}
+                </div>
+              )}
+            </div>
+            <button className={styles.importBannerClose} onClick={() => setImportResult(null)}>✕</button>
+          </div>
+        )}
 
         {/* Filter tabs */}
         <div className={styles.tabs}>

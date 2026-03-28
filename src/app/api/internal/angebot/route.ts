@@ -1,9 +1,9 @@
-export const runtime = "nodejs";
-
 import { NextRequest, NextResponse } from "next/server";
 import { renderToStream } from "@react-pdf/renderer";
 import type { Readable } from "stream";
 import { createElement } from "react";
+import fs from "fs";
+import path from "path";
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import Client from "@/models/Client";
@@ -14,14 +14,33 @@ import type { IInvoiceLean } from "@/services/pdf/InvoicePDF";
 import type { ICompanySettings } from "@/models/User";
 import type { IClientSnapshot } from "@/models/Invoice";
 
+// ─── Logo resolver ────────────────────────────────────────────────────────────
+
+function resolveLogoDataUri(storedLogoUrl?: string): string | undefined {
+  // Si ya es data URI o URL remota, usarla directamente
+  if (storedLogoUrl?.startsWith("data:") || storedLogoUrl?.startsWith("http")) {
+    return storedLogoUrl;
+  }
+  // Ruta relativa almacenada (ej. "/logos/abc.png") → absoluta dentro de public/
+  const relativePath = storedLogoUrl ?? "/logos/devos-logo.png";
+  const absPath = path.join(process.cwd(), "public", relativePath);
+  if (fs.existsSync(absPath)) {
+    const data = fs.readFileSync(absPath);
+    return `data:image/png;base64,${data.toString("base64")}`;
+  }
+  return undefined;
+}
+
+export const runtime = "nodejs";
+
 // ─── Package price map ────────────────────────────────────────────────────────
 
 const PACKAGE_PRICES: Record<string, number> = {
-  "express-24h": 1499,
-  "wp-base":     700,
-  "wp-premium":  900,
-  "wp-pro":      1500,
-  "web-app":     3500,
+  "express-24h":  1499,
+  "landing-page": 599,
+  "wp-premium":   900,
+  "wp-pro":       1500,
+  "web-app":      3500,
 };
 
 const DEFAULT_DUE_DAYS = parseInt(
@@ -42,6 +61,22 @@ interface AngebotBody {
   packageName: string;
   description: string;
   timing?: string;
+  unitPrice?: number;
+  companyName?: string;
+  street?: string;
+  zip?: string;
+  city?: string;
+}
+
+// ─── Diagnostic GET (remove after confirming env vars are set) ────────────────
+
+export async function GET() {
+  const key = process.env.INTERNAL_API_KEY;
+  return NextResponse.json({
+    hasKey: !!key,
+    keyPreview: key ? key.slice(0, 6) + "..." : null,
+    ownerEmail: process.env.INTERNAL_OWNER_EMAIL ?? null,
+  });
 }
 
 // ─── Handler ──────────────────────────────────────────────────────────────────
@@ -68,7 +103,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  const { name, email, packageId, packageName, description, timing } = body;
+  const { name, email, packageId, packageName, description, timing, unitPrice: bodyUnitPrice, companyName, street, zip, city } = body;
 
   if (!name || !email || !packageId || !packageName) {
     return NextResponse.json(
@@ -77,13 +112,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  const unitPrice = PACKAGE_PRICES[packageId];
-  if (unitPrice === undefined) {
+  const fallbackPrice = PACKAGE_PRICES[packageId];
+  if (fallbackPrice === undefined && bodyUnitPrice === undefined) {
     return NextResponse.json(
       { success: false, error: `Unbekanntes Paket: ${packageId}` },
       { status: 400 }
     );
   }
+  const unitPrice = bodyUnitPrice ?? fallbackPrice!;
 
   try {
     await connectDB();
@@ -111,16 +147,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       client = await Client.create({
         ownerId:     owner._id,
         contactName: name,
+        companyName: companyName || undefined,
         email:       email.toLowerCase(),
-        street:      "–",
-        zip:         "–",
-        city:        "–",
+        street:      street || "–",
+        zip:         zip    || "–",
+        city:        city   || "–",
         country:     "Deutschland",
       });
+    } else {
+      // Always sync name and update address/company if previously missing
+      if (name) client.contactName = name;
+      if (street) client.street = street;
+      if (zip)    client.zip    = zip;
+      if (city)   client.city   = city;
+      if (companyName) client.companyName = companyName;
+      await client.save();
     }
 
     // 4. Build invoice items
-    const lines: string[] = [description];
+    const lines: string[] = [];
+    if (description) lines.push(description);
     if (timing) lines.push(`Start: ${timing}`);
 
     // 5. Create draft invoice
@@ -204,6 +250,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       bic:           owner.company.bic,
       bankName:      owner.company.bankName,
       accountHolder: owner.company.accountHolder,
+      logoUrl:       resolveLogoDataUri(owner.company.logoUrl),
     };
 
     const stream = await renderToStream(

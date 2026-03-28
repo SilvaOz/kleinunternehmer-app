@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import { renderToStream } from "@react-pdf/renderer";
 import type { Readable } from "stream";
 import { createElement } from "react";
+import fs from "fs";
+import path from "path";
 import { connectDB } from "@/lib/db";
 import { getOwnerIdFromCookies } from "@/lib/auth";
 import Invoice from "@/models/Invoice";
@@ -12,6 +14,19 @@ import User from "@/models/User";
 import InvoicePDF from "@/services/pdf/InvoicePDF";
 import type { IInvoiceLean } from "@/services/pdf/InvoicePDF";
 import type { ICompanySettings } from "@/models/User";
+
+function resolveLogoDataUri(storedLogoUrl?: string): string | undefined {
+  if (storedLogoUrl?.startsWith("data:") || storedLogoUrl?.startsWith("http")) {
+    return storedLogoUrl;
+  }
+  const relativePath = storedLogoUrl ?? "/logos/devos-logo.png";
+  const absPath = path.join(process.cwd(), "public", relativePath);
+  if (fs.existsSync(absPath)) {
+    const data = fs.readFileSync(absPath);
+    return `data:image/png;base64,${data.toString("base64")}`;
+  }
+  return undefined;
+}
 
 function isValidObjectId(id: string): boolean {
   return mongoose.Types.ObjectId.isValid(id);
@@ -96,18 +111,19 @@ export async function GET(
     };
 
     const company: ICompanySettings = {
-      name:      user.company.name,
-      street:    user.company.street,
-      zip:       user.company.zip,
-      city:      user.company.city,
-      country:   user.company.country,
-      email:     user.company.email,
-      phone:     user.company.phone,
-      taxNumber: user.company.taxNumber,
-      iban:      user.company.iban,
+      name:          user.company.name,
+      street:        user.company.street,
+      zip:           user.company.zip,
+      city:          user.company.city,
+      country:       user.company.country,
+      email:         user.company.email,
+      phone:         user.company.phone,
+      taxNumber:     user.company.taxNumber,
+      iban:          user.company.iban,
       bic:           user.company.bic,
       bankName:      user.company.bankName,
       accountHolder: user.company.accountHolder,
+      logoUrl:       resolveLogoDataUri(user.company.logoUrl),
     };
 
     console.log("[pdf] starting render for invoice", invoice.invoiceNumber);

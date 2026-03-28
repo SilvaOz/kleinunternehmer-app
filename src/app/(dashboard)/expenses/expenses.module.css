@@ -204,6 +204,186 @@
   font-size: 13px;
 }
 
+/* ── Year select ── */
+.yearSelect {
+  background: #0d0d12;
+  border: 1px solid #2a2a36;
+  border-radius: 8px;
+  color: #ccc;
+  font-size: 13px;
+  padding: 8px 12px;
+  outline: none;
+  cursor: pointer;
+}
+.yearSelect:focus { border-color: #c8f04a; }
+
+/* ── Secondary button ── */
+.btnSecondary {
+  padding: 9px 16px;
+  border-radius: 8px;
+  background: none;
+  border: 1px solid #2a2a36;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btnSecondary:hover { border-color: #555; color: #e6e6e6; }
+
+/* ── Edit form ── */
+.editForm {
+  border-bottom: 1px solid #2a1a50;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #0f0f18;
+  border-left: 3px solid #7b5cf0;
+}
+
+/* ── Receipt row ── */
+.receiptRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.receiptLink {
+  flex: 1;
+  font-size: 11px;
+  color: #0dd3b8;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'DM Mono', monospace;
+}
+.receiptLink:hover { text-decoration: underline; }
+.btnReceiptUpload {
+  flex: 1;
+  background: none;
+  border: 1px dashed #2a2a36;
+  border-radius: 6px;
+  color: #555;
+  font-size: 11px;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  text-align: left;
+}
+.btnReceiptUpload:hover { border-color: #0dd3b8; color: #0dd3b8; }
+.btnReceiptUpload:disabled { opacity: 0.5; cursor: not-allowed; }
+.btnReceiptDelete {
+  background: none;
+  border: none;
+  color: #444;
+  font-size: 11px;
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.btnReceiptDelete:hover { color: #f0215d; }
+.btnReceiptDelete:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Card actions ── */
+.expCardActions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #1e1e2a;
+}
+.btnCardEdit {
+  flex: 1;
+  background: none;
+  border: 1px solid #2a2a36;
+  border-radius: 6px;
+  color: #888;
+  font-size: 11px;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btnCardEdit:hover { border-color: #7b5cf0; color: #a78bf5; }
+.btnCardDelete {
+  background: none;
+  border: 1px solid #2a2a36;
+  border-radius: 6px;
+  color: #666;
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btnCardDelete:hover { border-color: #f0215d; color: #f0215d; }
+.btnCardDelete:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.expenseCardActive {
+  border-color: #3a2a60 !important;
+  box-shadow: 0 0 0 1px #7b5cf0;
+}
+
+/* ── Summary ── */
+.summary {
+  border-top: 1px solid #1a1a24;
+  padding: 20px 24px;
+  background: #0d0d12;
+}
+.summaryTitle {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #444;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 14px;
+}
+.summaryGrid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.summaryBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+}
+.summaryLabel {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #555;
+  font-family: 'DM Mono', monospace;
+}
+.summaryValue {
+  font-size: 22px;
+  font-weight: 800;
+  color: #e6e6e6;
+  font-family: 'DM Mono', monospace;
+}
+.summaryValueGreen {
+  font-size: 22px;
+  font-weight: 800;
+  color: #c8f04a;
+  font-family: 'DM Mono', monospace;
+}
+.summaryCategories {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.summaryCatItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  gap: 16px;
+}
+.summaryCatItem span:last-child { color: #aaa; }
+
 /* ── Skeleton ── */
 .skeleton {
   background: linear-gradient(90deg, #1a1a22 25%, #22222e 50%, #1a1a22 75%);
