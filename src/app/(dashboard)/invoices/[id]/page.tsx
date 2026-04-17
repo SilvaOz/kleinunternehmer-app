@@ -17,10 +17,10 @@ function fmtDateTime(d?: string) {
 }
 
 const STATUS_CFG: Record<string, { label: string; color: string; bg: string }> = {
-  draft:    { label: "draft",    color: "#888",    bg: "#1e1e26" },
-  issued:   { label: "issued",   color: "#f0952d", bg: "#2a1e10" },
-  paid:     { label: "paid",     color: "#c8f04a", bg: "#1a2210" },
-  canceled: { label: "canceled", color: "#0dd3b8", bg: "#0e2222" },
+  draft:    { label: "Entwurf",   color: "#888",    bg: "#1e1e26" },
+  issued:   { label: "Offen",     color: "#f0952d", bg: "#2a1e10" },
+  paid:     { label: "Bezahlt",   color: "#c8f04a", bg: "#1a2210" },
+  canceled: { label: "Storniert", color: "#0dd3b8", bg: "#0e2222" },
 };
 
 type InvoiceItem = { title: string; qty: number; unitPrice: number; lines?: string[] };

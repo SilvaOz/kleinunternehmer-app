@@ -395,3 +395,18 @@
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .cardHeader { flex-wrap: wrap; gap: 10px; }
+  .cardActions { flex-wrap: wrap; }
+  .searchInput { width: 120px; }
+}
+
+@media (max-width: 480px) {
+  .formRow2 { flex-direction: column; }
+  .summaryGrid { flex-direction: column; gap: 14px; }
+  .summaryBlock { min-width: unset; }
+  .grid { padding: 14px 16px; }
+  .newForm, .editForm { padding: 16px; }
+}

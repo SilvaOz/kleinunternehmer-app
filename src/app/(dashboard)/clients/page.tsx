@@ -17,10 +17,17 @@ function initials(name: string) {
 }
 
 const STATUS_COLOR: Record<string, string> = {
-  paid: "#c8f04a",
-  issued: "#f0952d",
-  draft: "#666",
+  paid:     "#c8f04a",
+  issued:   "#f0952d",
+  draft:    "#666",
   canceled: "#f0215d",
+};
+
+const STATUS_DE: Record<string, string> = {
+  paid:     "Bezahlt",
+  issued:   "Offen",
+  draft:    "Entwurf",
+  canceled: "Storniert",
 };
 
 type Client = {
@@ -63,6 +70,7 @@ export default function ClientsPage() {
   const [editError, setEditError] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
+  const [sort, setSort] = useState<"umsatz_desc" | "umsatz_asc" | "count_desc" | "name_asc">("umsatz_desc");
   const qTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -182,6 +190,17 @@ export default function ClientsPage() {
     }
   }
 
+  const sortedClients = [...clients].sort((a, b) => {
+    const sa = stats[a._id] ?? { umsatz: 0, count: 0, lastStatus: null };
+    const sb = stats[b._id] ?? { umsatz: 0, count: 0, lastStatus: null };
+    if (sort === "umsatz_desc") return sb.umsatz - sa.umsatz;
+    if (sort === "umsatz_asc")  return sa.umsatz - sb.umsatz;
+    if (sort === "count_desc")  return sb.count - sa.count;
+    const na = (a.companyName || a.contactName || "").toLowerCase();
+    const nb = (b.companyName || b.contactName || "").toLowerCase();
+    return na.localeCompare(nb, "de");
+  });
+
   return (
     <div className={styles.wrap}>
       <div className={styles.pageLabel}>KUNDEN</div>
@@ -199,6 +218,17 @@ export default function ClientsPage() {
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </div>
+            <select
+              className={styles.sortSelect}
+              value={sort}
+              onChange={(e) => setSort(e.target.value as typeof sort)}
+              title="Sortierung"
+            >
+              <option value="umsatz_desc">Umsatz ↓</option>
+              <option value="umsatz_asc">Umsatz ↑</option>
+              <option value="count_desc">Meiste Rechnungen</option>
+              <option value="name_asc">Name A–Z</option>
+            </select>
             <button
               className={styles.btnImport}
               onClick={() => fileInputRef.current?.click()}
@@ -336,7 +366,7 @@ export default function ClientsPage() {
             [1, 2, 3].map((i) => <div key={i} className={`${styles.clientCard} ${styles.skeleton}`} />)
           ) : (
             <>
-              {clients.map((c) => {
+              {sortedClients.map((c) => {
                 const name = c.companyName || c.contactName || "?";
                 const color = avatarColor(name);
                 const s = stats[c._id] ?? { umsatz: 0, count: 0, lastStatus: null };
@@ -369,7 +399,7 @@ export default function ClientsPage() {
                           className={styles.statValue}
                           style={{ color: s.lastStatus ? STATUS_COLOR[s.lastStatus] : "#666" }}
                         >
-                          {s.lastStatus ?? "–"}
+                          {s.lastStatus ? (STATUS_DE[s.lastStatus] ?? s.lastStatus) : "–"}
                         </div>
                         <div className={styles.statLabel}>Letzter Status</div>
                       </div>

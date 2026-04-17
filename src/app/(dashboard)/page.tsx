@@ -221,7 +221,7 @@ export default function DashboardPage() {
                       className={styles.tableRow}
                     >
                       <td className={isDraft ? styles.numDraft : styles.numActive}>
-                        {isDraft ? "draft" : inv.invoiceNumber}
+                        {isDraft ? "Entwurf" : inv.invoiceNumber}
                       </td>
                       <td>
                         <div className={styles.clientName}>

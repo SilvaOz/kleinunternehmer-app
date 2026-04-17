@@ -78,6 +78,20 @@
 }
 .btnPrimary:hover { background: #d6f560; transform: translateY(-1px); }
 .btnPrimary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.sortSelect {
+  background: #0d0d12;
+  border: 1px solid #2a2a36;
+  border-radius: 8px;
+  color: #ccc;
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  transition: border-color 0.15s;
+}
+.sortSelect:focus, .sortSelect:hover { border-color: #555; }
 .btnCancel {
   padding: 10px 20px;
   border-radius: 8px;
@@ -309,4 +323,18 @@
 @keyframes shimmer {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .cardHeader { flex-wrap: wrap; gap: 10px; }
+  .cardActions { flex-wrap: wrap; }
+  .searchInput { width: 120px; }
+}
+
+@media (max-width: 480px) {
+  .formRow2 { flex-direction: column; }
+  .avatar { width: 36px; height: 36px; font-size: 13px; }
+  .grid { padding: 14px 16px; gap: 12px; }
+  .newForm { padding: 16px; }
 }

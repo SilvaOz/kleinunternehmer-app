@@ -350,3 +350,18 @@
   font-weight: 600;
   color: #888;
 }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .wrap { gap: 14px; }
+  .title { font-size: 26px; }
+  .header { flex-wrap: wrap; }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .wrap { gap: 10px; }
+  .quick { grid-template-columns: 1fr; }
+  .kpiValue { font-size: 22px; }
+}

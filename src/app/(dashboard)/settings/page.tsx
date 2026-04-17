@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./settings.module.css";
+import InvoicePreview from "@/components/InvoicePreview";
 
 // ── Types ─────────────────────────────────────
 type UserData = {
@@ -62,6 +63,7 @@ export default function SettingsPage() {
     phone: "", email: "", taxNumber: "", iban: "", bic: "", bankName: "", accountHolder: "",
   });
   const [savingFirma, setSavingFirma] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [firmaMsg, setFirmaMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   // Section 1b — Rechnungsnummer counter
@@ -269,6 +271,27 @@ export default function SettingsPage() {
               </button>
             </div>
           </form>
+        </div>
+
+        {/* ── Rechnungsvorschau ── */}
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <div className={styles.cardTitle}>Rechnungsvorschau</div>
+            <button
+              className={styles.btnPreviewToggle}
+              onClick={() => setShowPreview((v) => !v)}
+            >
+              {showPreview ? "Vorschau schließen" : "Vorschau anzeigen"}
+            </button>
+          </div>
+          {showPreview && (
+            <div className={styles.previewWrap}>
+              <p className={styles.previewHint}>
+                So erscheinen deine Daten auf jeder Rechnung. Die Vorschau aktualisiert sich live während du tippst.
+              </p>
+              <InvoicePreview firma={firma} />
+            </div>
+          )}
         </div>
 
         {/* ── Section 1b: Rechnungsnummer ── */}

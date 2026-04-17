@@ -9,10 +9,10 @@ const fmt = (n: number) =>
   new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n);
 
 const STATUS_CFG: Record<string, { label: string; color: string; bg: string }> = {
-  draft:    { label: "draft",    color: "#888",    bg: "#1e1e26" },
-  issued:   { label: "issued",   color: "#f0215d", bg: "#2a1018" },
-  paid:     { label: "paid",     color: "#c8f04a", bg: "#1a2210" },
-  canceled: { label: "canceled", color: "#0dd3b8", bg: "#0e2222" },
+  draft:    { label: "Entwurf",   color: "#888",    bg: "#1e1e26" },
+  issued:   { label: "Offen",     color: "#f0215d", bg: "#2a1018" },
+  paid:     { label: "Bezahlt",   color: "#c8f04a", bg: "#1a2210" },
+  canceled: { label: "Storniert", color: "#0dd3b8", bg: "#0e2222" },
 };
 
 type Invoice = {
@@ -35,6 +35,8 @@ export default function InvoicesPage() {
   const [loading, setLoading] = useState(true);
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
+  const [paying, setPaying] = useState<string | null>(null);
+  const [yearFilter, setYearFilter] = useState<number | "all">(new Date().getFullYear());
   const qTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInputRef    = useRef<HTMLInputElement | null>(null);
   const pdfInputRef     = useRef<HTMLInputElement | null>(null);
@@ -56,22 +58,32 @@ export default function InvoicesPage() {
     qTimer.current = setTimeout(() => load(v), 350);
   }
 
+  const currentYear = new Date().getFullYear();
+  const availableYears = [
+    currentYear,
+    ...Array.from(new Set(invoices.map((i) => (i as any).year).filter((y) => y > 0))),
+  ].filter((y, idx, arr) => arr.indexOf(y) === idx).sort((a, b) => b - a);
+
+  const byYear = yearFilter === "all"
+    ? invoices
+    : invoices.filter((i) => (i as any).year === yearFilter || i.status === "draft");
+
   const counts: Record<Filter, number> = {
-    all:      invoices.length,
-    draft:    invoices.filter((i) => i.status === "draft").length,
-    issued:   invoices.filter((i) => i.status === "issued").length,
-    paid:     invoices.filter((i) => i.status === "paid").length,
-    canceled: invoices.filter((i) => i.status === "canceled").length,
+    all:      byYear.length,
+    draft:    byYear.filter((i) => i.status === "draft").length,
+    issued:   byYear.filter((i) => i.status === "issued").length,
+    paid:     byYear.filter((i) => i.status === "paid").length,
+    canceled: byYear.filter((i) => i.status === "canceled").length,
   };
 
-  const visible = filter === "all" ? invoices : invoices.filter((i) => i.status === filter);
+  const visible = filter === "all" ? byYear : byYear.filter((i) => i.status === filter);
 
   const TABS: { key: Filter; label: string }[] = [
     { key: "all",      label: "Alle" },
-    { key: "draft",    label: "Draft" },
-    { key: "issued",   label: "Issued" },
-    { key: "paid",     label: "Paid" },
-    { key: "canceled", label: "Canceled" },
+    { key: "draft",    label: "Entwurf" },
+    { key: "issued",   label: "Offen" },
+    { key: "paid",     label: "Bezahlt" },
+    { key: "canceled", label: "Storniert" },
   ];
 
   async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
@@ -110,63 +122,89 @@ export default function InvoicesPage() {
     }
   }
 
+  async function markPaid(e: React.MouseEvent, id: string) {
+    e.stopPropagation();
+    setPaying(id);
+    const res = await fetch(`/api/invoices/${id}/pay`, { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }).then((r) => r.json());
+    setPaying(null);
+    if (res.success) {
+      setInvoices((prev) => prev.map((inv) => inv._id === id ? { ...inv, status: "paid" } : inv));
+    }
+  }
+
   return (
     <div className={styles.wrap}>
       <div className={styles.pageLabel}>RECHNUNGEN – LISTE</div>
       <div className={styles.card}>
         {/* Header */}
         <div className={styles.cardHeader}>
-          <h1 className={styles.cardTitle}>Rechnungen</h1>
-          <div className={styles.cardActions}>
-            <div className={styles.searchWrap}>
-              <span className={styles.searchIcon}>🔍</span>
-              <input
-                className={styles.searchInput}
-                placeholder="Suchen..."
-                value={q}
-                onChange={(e) => handleSearch(e.target.value)}
-              />
-            </div>
-            <a href="/api/reports/export?type=eur" className={styles.btnSecondary}>
-              ↓ Export
-            </a>
-            <a href="/templates/rechnungen-vorlage.csv" download className={styles.btnSecondary}>
-              ↓ Vorlage CSV
-            </a>
-            <button
-              className={styles.btnSecondary}
-              onClick={() => pdfInputRef.current?.click()}
-              disabled={importing}
-              style={{ cursor: importing ? "not-allowed" : "pointer", fontWeight: 600 }}
-            >
-              {importing ? "Importieren…" : "↑ PDFs importieren"}
-            </button>
-            <input
-              ref={pdfInputRef}
-              type="file"
-              accept=".pdf"
-              multiple
-              style={{ display: "none" }}
-              onChange={handlePdfImport}
-            />
-            <button
-              className={styles.btnSecondary}
-              onClick={() => fileInputRef.current?.click()}
-              disabled={importing}
-              style={{ cursor: importing ? "not-allowed" : "pointer" }}
-            >
-              {importing ? "Importieren…" : "↑ CSV importieren"}
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".csv"
-              style={{ display: "none" }}
-              onChange={handleImport}
-            />
+          <div className={styles.headerRow1}>
+            <h1 className={styles.cardTitle}>Rechnungen</h1>
             <Link href="/invoices/new" className={styles.btnPrimary}>
               + Neue Rechnung
             </Link>
+          </div>
+          <div className={styles.headerRow2}>
+            <div className={styles.secondaryActions}>
+              <a href="/api/reports/export?type=eur" className={styles.btnSecondary}>
+                ↓ Exportieren
+              </a>
+              <a href="/templates/rechnungen-vorlage.csv" download className={styles.btnSecondary}>
+                ↓ Vorlage CSV
+              </a>
+              <button
+                className={styles.btnSecondary}
+                onClick={() => pdfInputRef.current?.click()}
+                disabled={importing}
+                style={{ cursor: importing ? "not-allowed" : "pointer", fontWeight: 600 }}
+              >
+                {importing ? "Importieren…" : "↑ PDFs importieren"}
+              </button>
+              <input
+                ref={pdfInputRef}
+                type="file"
+                accept=".pdf"
+                multiple
+                style={{ display: "none" }}
+                onChange={handlePdfImport}
+              />
+              <button
+                className={styles.btnSecondary}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={importing}
+                style={{ cursor: importing ? "not-allowed" : "pointer" }}
+              >
+                {importing ? "Importieren…" : "↑ CSV importieren"}
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv"
+                style={{ display: "none" }}
+                onChange={handleImport}
+              />
+            </div>
+            <div className={styles.headerRow2Right}>
+              <select
+                className={styles.yearSelect}
+                value={yearFilter}
+                onChange={(e) => setYearFilter(e.target.value === "all" ? "all" : Number(e.target.value))}
+              >
+                <option value="all">Alle Jahre</option>
+                {availableYears.map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+              <div className={styles.searchWrap}>
+                <span className={styles.searchIcon}>🔍</span>
+                <input
+                  className={styles.searchInput}
+                  placeholder="Suchen..."
+                  value={q}
+                  onChange={(e) => handleSearch(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -210,6 +248,7 @@ export default function InvoicesPage() {
         </div>
 
         {/* Table */}
+        <div className={styles.tableWrap}>
         <table className={styles.table}>
           <thead>
             <tr>
@@ -219,13 +258,14 @@ export default function InvoicesPage() {
               <th>FÄLLIG BIS</th>
               <th style={{ textAlign: "right" }}>BETRAG</th>
               <th>STATUS</th>
+              <th />
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={6}><div className={styles.skeleton} style={{ height: 160, margin: "16px" }} /></td></tr>
+              <tr><td colSpan={7}><div className={styles.skeleton} style={{ height: 160, margin: "16px" }} /></td></tr>
             ) : visible.length === 0 ? (
-              <tr><td colSpan={6} className={styles.emptyCell}>Keine Rechnungen gefunden.</td></tr>
+              <tr><td colSpan={7} className={styles.emptyCell}>Keine Rechnungen gefunden.</td></tr>
             ) : (
               visible.map((inv) => {
                 const isDraft = inv.status === "draft";
@@ -260,12 +300,24 @@ export default function InvoicesPage() {
                         {cfg.label}
                       </span>
                     </td>
+                    <td onClick={(e) => e.stopPropagation()}>
+                      {inv.status === "issued" && (
+                        <button
+                          className={styles.btnMarkPaid}
+                          disabled={paying === inv._id}
+                          onClick={(e) => markPaid(e, inv._id)}
+                        >
+                          {paying === inv._id ? "…" : "✓ Bezahlt"}
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 );
               })
             )}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

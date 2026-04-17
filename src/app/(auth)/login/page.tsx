@@ -208,6 +208,15 @@ export default function LoginPage() {
                 />
               </div>
 
+              <div style={{ textAlign: "right" }}>
+                <Link
+                  href="/forgot-password"
+                  style={{ color: "#888", fontSize: "12px", textDecoration: "none" }}
+                >
+                  Passwort vergessen?
+                </Link>
+              </div>
+
               {error && (
                 <p style={{
                   color: "#f87171",

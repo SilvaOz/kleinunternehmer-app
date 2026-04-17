@@ -387,3 +387,16 @@
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .invHeaderRight { flex-wrap: wrap; gap: 6px; }
+  .datesRow { flex-wrap: wrap; gap: 14px; }
+  .snapRow { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  .invNumber { font-size: 20px; }
+  .mainCard { padding: 16px; }
+}

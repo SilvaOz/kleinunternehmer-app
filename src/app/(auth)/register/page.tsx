@@ -30,7 +30,7 @@ interface FormData {
 
 const EMPTY: FormData = {
   email: "", password: "", passwordConfirm: "",
-  companyName: "", street: "", zip: "", city: "Berlin",
+  companyName: "", street: "", zip: "", city: "",
   country: "Deutschland", taxNumber: "", iban: "", bic: "", bankName: "",
 };
 

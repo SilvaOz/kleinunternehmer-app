@@ -275,3 +275,15 @@
   text-align: center;
   margin-top: 6px;
 }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .row2 { grid-template-columns: 1fr; }
+  .itemsHeader { font-size: 9px; gap: 6px; }
+  .itemRow { flex-wrap: wrap; gap: 6px; }
+  .formCard { padding: 16px; }
+}

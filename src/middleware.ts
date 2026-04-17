@@ -5,10 +5,12 @@ const PUBLIC_API_ROUTES = [
   "/api/auth/login",
   "/api/auth/logout",
   "/api/auth/register",
+  "/api/auth/reset-request",
+  "/api/auth/reset-password",
   "/api/internal/angebot",
 ];
 
-const PUBLIC_PAGE_ROUTES = ["/login", "/register"];
+const PUBLIC_PAGE_ROUTES = ["/login", "/register", "/forgot-password", "/reset-password"];
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|icons|images).*)"],

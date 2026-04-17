@@ -29,6 +29,8 @@ export interface IUser extends Document {
   vatRate: number;
   company: ICompanySettings;
   isActive: boolean;
+  resetToken?: string;
+  resetTokenExpiresAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -92,6 +94,14 @@ const UserSchema = new Schema<IUser>(
     isActive: {
       type:    Boolean,
       default: true,
+    },
+    resetToken: {
+      type: String,
+      select: false,
+    },
+    resetTokenExpiresAt: {
+      type: Date,
+      select: false,
     },
   },
   {

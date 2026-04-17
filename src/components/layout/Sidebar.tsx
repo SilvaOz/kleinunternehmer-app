@@ -4,7 +4,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "@/components/layout/Sidebar.module.css";
 
-export default function Sidebar() {
+interface Props {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen = false, onClose }: Props) {
   const pathname = usePathname() || "/";
   const router = useRouter();
   const [openCount, setOpenCount] = useState(0);
@@ -42,11 +47,14 @@ export default function Sidebar() {
   const initials = companyName.trim() ? companyName.trim()[0].toUpperCase() : "?";
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={styles.sidebar} data-open={isOpen}>
       <div>
-        <div className={styles.brand}>
-          <div className={styles.logo}>InvoiceOS</div>
-          <div className={styles.subtitle}>Kleinunternehmer</div>
+        <div className={styles.brandRow}>
+          <div className={styles.brand}>
+            <div className={styles.logo}>InvoiceOS</div>
+            <div className={styles.subtitle}>Kleinunternehmer</div>
+          </div>
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Schließen">✕</button>
         </div>
 
         <nav className={styles.nav}>
