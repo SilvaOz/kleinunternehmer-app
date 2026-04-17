@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["@react-pdf/renderer", "mongoose", "bcryptjs"],
+  serverExternalPackages: ["@react-pdf/renderer", "mongoose", "bcryptjs", "pdf-parse"],
   outputFileTracingIncludes: {
     "/api/invoices/\\[id\\]/pdf": [
       "./node_modules/@react-pdf/**/*",

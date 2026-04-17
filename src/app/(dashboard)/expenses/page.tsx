@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./expenses.module.css";
 
 const fmt = (n: number) =>
@@ -191,7 +191,7 @@ export default function ExpensesPage() {
     fileInputRef.current?.click();
   }
 
-  const handleFileSelected = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+  async function handleFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     const targetId = uploadTargetId.current;
     if (!file || !targetId) return;
@@ -210,7 +210,7 @@ export default function ExpensesPage() {
     } else {
       alert(res.error ?? "Upload fehlgeschlagen.");
     }
-  }, []);
+  }
 
   async function deleteReceipt(expenseId: string) {
     if (!confirm("Beleg löschen?")) return;
