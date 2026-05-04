@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./new.module.css";
 
 const fmt = (n: number) =>
@@ -10,40 +10,74 @@ type Client = {
   _id: string;
   companyName?: string;
   contactName?: string;
-  street: string;
-  zip: string;
-  city: string;
-  country: string;
+  street?: string;
+  zip?: string;
+  city?: string;
+  country?: string;
 };
 
 type Item = { title: string; qty: number; unitPrice: number };
 
-export default function InvoiceNewPage() {
+function defaultDueAt() {
+  const d = new Date();
+  d.setDate(d.getDate() + 14);
+  return d.toISOString().slice(0, 10);
+}
+
+function InvoiceForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const draftId = searchParams.get("draft");
+
   const [clients, setClients] = useState<Client[]>([]);
   const [clientId, setClientId] = useState("");
-  const [dueAt, setDueAt] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 14);
-    return d.toISOString().slice(0, 10);
-  });
+  const [dueAt, setDueAt] = useState(defaultDueAt);
   const [currency] = useState("EUR");
   const [items, setItems] = useState<Item[]>([{ title: "", qty: 1, unitPrice: 0 }]);
   const [footerText, setFooterText] = useState("Vielen Dank für Ihren Auftrag.");
   const [saving, setSaving] = useState(false);
   const [issuing, setIssuing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loadingDraft, setLoadingDraft] = useState(!!draftId);
 
+  // Load clients
   useEffect(() => {
     fetch("/api/clients")
       .then((r) => r.json())
       .then((res) => {
         const list: Client[] = res.data ?? [];
         setClients(list);
-        if (list.length > 0) setClientId(list[0]._id);
+        // Only pre-select first client when creating new (not editing)
+        if (!draftId && list.length > 0) setClientId(list[0]._id);
       })
       .catch(() => {});
-  }, []);
+  }, [draftId]);
+
+  // Load existing draft data if editing
+  useEffect(() => {
+    if (!draftId) return;
+    fetch(`/api/invoices/${draftId}`)
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success && res.data) {
+          const inv = res.data;
+          if (inv.clientId) setClientId(inv.clientId);
+          if (inv.dueAt) setDueAt(new Date(inv.dueAt).toISOString().slice(0, 10));
+          if (inv.footerText) setFooterText(inv.footerText);
+          if (inv.items?.length > 0) {
+            setItems(
+              inv.items.map((it: { title: string; qty: number; unitPrice: number }) => ({
+                title: it.title,
+                qty: it.qty,
+                unitPrice: it.unitPrice,
+              }))
+            );
+          }
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoadingDraft(false));
+  }, [draftId]);
 
   function selectedClient() {
     return clients.find((c) => c._id === clientId) ?? null;
@@ -58,12 +92,12 @@ export default function InvoiceNewPage() {
   }
 
   function updateItem(i: number, k: keyof Item, v: string | number) {
-    setItems((prev) => prev.map((item, idx) => idx === i ? { ...item, [k]: v } : item));
+    setItems((prev) => prev.map((item, idx) => (idx === i ? { ...item, [k]: v } : item)));
   }
 
   const subtotal = items.reduce((s, it) => s + it.qty * it.unitPrice, 0);
 
-  async function buildPayload() {
+  function buildPayload() {
     return {
       clientId: clientId || undefined,
       dueAt: dueAt || undefined,
@@ -77,14 +111,26 @@ export default function InvoiceNewPage() {
   async function handleDraft() {
     setSaving(true);
     setError(null);
-    const res = await fetch("/api/invoices", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(await buildPayload()),
-    }).then((r) => r.json());
+    const payload = buildPayload();
+
+    let res;
+    if (draftId) {
+      res = await fetch(`/api/invoices/${draftId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }).then((r) => r.json());
+    } else {
+      res = await fetch("/api/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }).then((r) => r.json());
+    }
+
     setSaving(false);
     if (res.success && res.data) {
-      router.push("/invoices");
+      router.push(`/invoices/${res.data._id}`);
     } else {
       setError(res.error ?? "Fehler beim Speichern.");
     }
@@ -93,38 +139,65 @@ export default function InvoiceNewPage() {
   async function handleIssue() {
     setIssuing(true);
     setError(null);
-    const createRes = await fetch("/api/invoices", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(await buildPayload()),
-    }).then((r) => r.json());
-    if (!createRes.success || !createRes.data) {
-      setError(createRes.error ?? "Fehler beim Erstellen.");
-      setIssuing(false);
-      return;
+    const payload = buildPayload();
+
+    let invId = draftId;
+
+    if (!invId) {
+      const createRes = await fetch("/api/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }).then((r) => r.json());
+      if (!createRes.success || !createRes.data) {
+        setError(createRes.error ?? "Fehler beim Erstellen.");
+        setIssuing(false);
+        return;
+      }
+      invId = createRes.data._id;
+    } else {
+      const updateRes = await fetch(`/api/invoices/${invId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }).then((r) => r.json());
+      if (!updateRes.success) {
+        setError(updateRes.error ?? "Fehler beim Speichern.");
+        setIssuing(false);
+        return;
+      }
     }
-    const id = createRes.data._id;
-    const issueRes = await fetch(`/api/invoices/${id}/issue`, {
-      method: "POST",
-    }).then((r) => r.json());
+
+    const issueRes = await fetch(`/api/invoices/${invId}/issue`, { method: "POST" }).then((r) =>
+      r.json()
+    );
     setIssuing(false);
     if (issueRes.success) {
-      router.push(`/invoices/${id}`);
+      router.push(`/invoices/${invId}`);
     } else {
       setError(issueRes.error ?? "Fehler beim Ausstellen.");
     }
+  }
+
+  if (loadingDraft) {
+    return (
+      <div className={styles.wrap}>
+        <div className={styles.pageLabel}>RECHNUNG BEARBEITEN</div>
+        <div style={{ padding: 40, color: "#888" }}>Lade Entwurf…</div>
+      </div>
+    );
   }
 
   const c = selectedClient();
 
   return (
     <div className={styles.wrap}>
-      <div className={styles.pageLabel}>RECHNUNG ERSTELLEN</div>
+      <div className={styles.pageLabel}>{draftId ? "ENTWURF BEARBEITEN" : "RECHNUNG ERSTELLEN"}</div>
       <div className={styles.layout}>
         {/* ── Left: Form ── */}
         <div className={styles.formCard}>
           <div className={styles.formCardHeader}>
-            <h1 className={styles.formTitle}>Neue Rechnung</h1>
+            <h1 className={styles.formTitle}>{draftId ? "Entwurf bearbeiten" : "Neue Rechnung"}</h1>
             <span className={styles.draftBadge}>● draft</span>
           </div>
 
@@ -146,7 +219,7 @@ export default function InvoiceNewPage() {
                   </option>
                 ))}
               </select>
-              {c && (
+              {c && c.street && (
                 <div className={styles.clientAddr}>
                   {c.street} · {c.zip} {c.city}
                 </div>
@@ -197,7 +270,9 @@ export default function InvoiceNewPage() {
                     type="number"
                     min="1"
                     value={item.qty}
-                    onChange={(e) => updateItem(i, "qty", Math.max(1, parseInt(e.target.value) || 1))}
+                    onChange={(e) =>
+                      updateItem(i, "qty", Math.max(1, parseInt(e.target.value) || 1))
+                    }
                   />
                 </div>
                 <div style={{ flex: 1 }}>
@@ -214,7 +289,9 @@ export default function InvoiceNewPage() {
                   {fmt(item.qty * item.unitPrice)}
                 </div>
                 {items.length > 1 && (
-                  <button className={styles.removeBtn} onClick={() => removeItem(i)}>×</button>
+                  <button className={styles.removeBtn} onClick={() => removeItem(i)}>
+                    ×
+                  </button>
                 )}
               </div>
             ))}
@@ -274,5 +351,13 @@ export default function InvoiceNewPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function InvoiceNewPage() {
+  return (
+    <Suspense>
+      <InvoiceForm />
+    </Suspense>
   );
 }

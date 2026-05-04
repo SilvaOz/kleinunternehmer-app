@@ -36,6 +36,7 @@ type Invoice = {
   _id: string;
   invoiceNumber: string;
   status: string;
+  clientId?: string;
   issuedAt?: string;
   dueAt?: string;
   paidAt?: string;
@@ -72,6 +73,7 @@ export default function InvoiceDetailPage() {
   const [editingNumber, setEditingNumber] = useState(false);
   const [numberInput, setNumberInput] = useState("");
   const [numberSaving, setNumberSaving] = useState(false);
+  const [clientName, setClientName] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`/api/invoices/${id}`)
@@ -83,6 +85,21 @@ export default function InvoiceDetailPage() {
       .catch(() => setError("Fehler beim Laden."))
       .finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    if (!invoice) return;
+    if (invoice.clientSnapshot) return; // snapshot has priority
+    if (!invoice.clientId) return;
+    fetch(`/api/clients/${invoice.clientId}`)
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success && res.data) {
+          const c = res.data;
+          setClientName(c.companyName || c.contactName || null);
+        }
+      })
+      .catch(() => {});
+  }, [invoice]);
 
   async function doAction(action: string) {
     setActionLoading(action);
@@ -144,6 +161,19 @@ export default function InvoiceDetailPage() {
       setEditingNumber(false);
     } else {
       setError(res.error ?? "Fehler beim Speichern.");
+    }
+  }
+
+  async function handleDeleteDraft() {
+    if (!confirm("Entwurf löschen?")) return;
+    setActionLoading("delete");
+    setError(null);
+    const res = await fetch(`/api/invoices/${id}`, { method: "DELETE" }).then((r) => r.json());
+    setActionLoading(null);
+    if (res.success) {
+      router.push("/invoices");
+    } else {
+      setError(res.error ?? "Fehler beim Löschen.");
     }
   }
 
@@ -288,7 +318,7 @@ export default function InvoiceDetailPage() {
             )}
           </div>
 
-          {/* Client snapshot */}
+          {/* Client snapshot (issued/paid) */}
           {snap && !editingSnap && (
             <div className={styles.recipientBox}>
               <div className={styles.recipientLabelRow}>
@@ -297,6 +327,15 @@ export default function InvoiceDetailPage() {
               </div>
               <div className={styles.recipientName}>{snap.companyName || snap.contactName}</div>
               {addrLine && <div className={styles.recipientAddr}>{addrLine}</div>}
+            </div>
+          )}
+          {/* Client name from reference (draft only) */}
+          {!snap && clientName && !editingSnap && (
+            <div className={styles.recipientBox}>
+              <div className={styles.recipientLabelRow}>
+                <div className={styles.recipientLabel}>KUNDE</div>
+              </div>
+              <div className={styles.recipientName}>{clientName}</div>
             </div>
           )}
           {editingSnap && (
@@ -397,6 +436,11 @@ export default function InvoiceDetailPage() {
             >
               📄 PDF herunterladen
             </a>
+            {invoice.status === "draft" && (
+              <a href={`/invoices/new?draft=${id}`} className={styles.actionBtn}>
+                ✎ Entwurf bearbeiten
+              </a>
+            )}
             {invoice.status === "issued" && (
               <button
                 className={styles.actionBtn}
@@ -413,6 +457,15 @@ export default function InvoiceDetailPage() {
                 disabled={actionLoading === "storno"}
               >
                 {actionLoading === "storno" ? "…" : "↩ Stornorechnung erstellen"}
+              </button>
+            )}
+            {invoice.status === "draft" && (
+              <button
+                className={styles.actionBtnDanger}
+                onClick={handleDeleteDraft}
+                disabled={actionLoading === "delete"}
+              >
+                {actionLoading === "delete" ? "…" : "🗑 Entwurf löschen"}
               </button>
             )}
           </div>

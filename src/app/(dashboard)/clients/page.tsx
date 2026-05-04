@@ -34,10 +34,10 @@ type Client = {
   _id: string;
   companyName?: string;
   contactName?: string;
-  street: string;
-  zip: string;
-  city: string;
-  country: string;
+  street?: string;
+  zip?: string;
+  city?: string;
+  country?: string;
   email?: string;
   phone?: string;
 };
@@ -379,9 +379,11 @@ export default function ClientsPage() {
                     {c.companyName && c.contactName && (
                       <div className={styles.clientContact}>{c.contactName}</div>
                     )}
-                    <div className={styles.clientLocation}>
-                      📍 {c.city}, {c.country}
-                    </div>
+                    {(c.city || c.country) && (
+                      <div className={styles.clientLocation}>
+                        📍 {[c.city, c.country].filter(Boolean).join(", ")}
+                      </div>
+                    )}
                     <div className={styles.divider} />
                     <div className={styles.clientStats}>
                       <div>

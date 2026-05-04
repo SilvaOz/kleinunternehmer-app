@@ -8,9 +8,9 @@ export interface IClient extends Document {
   ownerId: mongoose.Types.ObjectId;
   companyName?: string;
   contactName?: string;
-  street: string;
-  zip: string;
-  city: string;
+  street?: string;
+  zip?: string;
+  city?: string;
   country: string;
   email?: string;
   phone?: string;
@@ -51,25 +51,21 @@ const ClientSchema = new Schema<IClient>(
       trim: true,
     },
     street: {
-      type:     String,
-      required: true,
-      trim:     true,
+      type: String,
+      trim: true,
     },
     zip: {
-      type:     String,
-      required: true,
-      trim:     true,
+      type: String,
+      trim: true,
     },
     city: {
-      type:     String,
-      required: true,
-      trim:     true,
+      type: String,
+      trim: true,
     },
     country: {
-      type:     String,
-      required: true,
-      trim:     true,
-      default:  "Deutschland",
+      type:    String,
+      trim:    true,
+      default: "Deutschland",
     },
     email: {
       type:      String,
