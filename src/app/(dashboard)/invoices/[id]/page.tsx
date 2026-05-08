@@ -74,6 +74,11 @@ export default function InvoiceDetailPage() {
   const [numberInput, setNumberInput] = useState("");
   const [numberSaving, setNumberSaving] = useState(false);
   const [clientName, setClientName] = useState<string | null>(null);
+  const [editingItems, setEditingItems] = useState(false);
+  const [itemsForm, setItemsForm] = useState<InvoiceItem[]>([]);
+  const [issuedAtInput, setIssuedAtInput] = useState("");
+  const [dueAtInput, setDueAtInput] = useState("");
+  const [itemsSaving, setItemsSaving] = useState(false);
 
   useEffect(() => {
     fetch(`/api/invoices/${id}`)
@@ -187,6 +192,55 @@ export default function InvoiceDetailPage() {
       router.push(`/invoices/${res.data._id}`);
     } else {
       setError(res.error ?? "Fehler beim Stornieren.");
+    }
+  }
+
+  function openItemsEdit() {
+    if (!invoice) return;
+    setItemsForm(invoice.items.map((it) => ({ ...it, lines: it.lines ?? [] })));
+    const toInputDate = (d?: string) => d ? new Date(d).toISOString().slice(0, 10) : "";
+    setIssuedAtInput(toInputDate(invoice.issuedAt));
+    setDueAtInput(toInputDate(invoice.dueAt));
+    setEditingItems(true);
+  }
+
+  function updateItem(idx: number, field: keyof InvoiceItem, value: string | number) {
+    setItemsForm((prev) => prev.map((it, i) => i === idx ? { ...it, [field]: value } : it));
+  }
+
+  function removeItem(idx: number) {
+    setItemsForm((prev) => prev.filter((_, i) => i !== idx));
+  }
+
+  function addItem() {
+    setItemsForm((prev) => [...prev, { title: "", qty: 1, unitPrice: 0, lines: [] }]);
+  }
+
+  async function saveItems(e: React.FormEvent) {
+    e.preventDefault();
+    setItemsSaving(true);
+    setError(null);
+    const body: Record<string, unknown> = {
+      items: itemsForm.map((it) => ({
+        title: it.title,
+        qty: Number(it.qty),
+        unitPrice: Number(it.unitPrice),
+        lines: it.lines ?? [],
+      })),
+    };
+    if (issuedAtInput) body.issuedAt = issuedAtInput;
+    if (dueAtInput) body.dueAt = dueAtInput;
+    const res = await fetch(`/api/invoices/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).then((r) => r.json());
+    setItemsSaving(false);
+    if (res.success && res.data) {
+      setInvoice(res.data);
+      setEditingItems(false);
+    } else {
+      setError(res.error ?? "Fehler beim Speichern.");
     }
   }
 
@@ -379,26 +433,143 @@ export default function InvoiceDetailPage() {
           )}
 
           {/* Items table */}
-          <table className={styles.itemsTable}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left" }}>BEZEICHNUNG</th>
-                <th style={{ textAlign: "center" }}>MENGE</th>
-                <th style={{ textAlign: "right" }}>EINZELPREIS</th>
-                <th style={{ textAlign: "right" }}>BETRAG</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoice.items.map((item, i) => (
-                <tr key={i}>
-                  <td>{item.title}</td>
-                  <td style={{ textAlign: "center" }}>{item.qty}</td>
-                  <td style={{ textAlign: "right" }}>{fmt(item.unitPrice)}</td>
-                  <td style={{ textAlign: "right" }}>{fmt(item.qty * item.unitPrice)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {!editingItems ? (
+            <>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+                <div />
+                {invoice.status !== "draft" && invoice.status !== "canceled" && (
+                  <button className={styles.btnEditSnap} onClick={openItemsEdit}>
+                    ✎ Positionen korrigieren
+                  </button>
+                )}
+              </div>
+              <table className={styles.itemsTable}>
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: "left" }}>BEZEICHNUNG</th>
+                    <th style={{ textAlign: "center" }}>MENGE</th>
+                    <th style={{ textAlign: "right" }}>EINZELPREIS</th>
+                    <th style={{ textAlign: "right" }}>BETRAG</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invoice.items.map((item, i) => (
+                    <tr key={i}>
+                      <td>{item.title}</td>
+                      <td style={{ textAlign: "center" }}>{item.qty}</td>
+                      <td style={{ textAlign: "right" }}>{fmt(item.unitPrice)}</td>
+                      <td style={{ textAlign: "right" }}>{fmt(item.qty * item.unitPrice)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <form className={styles.snapForm} onSubmit={saveItems} style={{ marginTop: 8 }}>
+              <div className={styles.snapFormTitle}>Positionen korrigieren</div>
+
+              {/* Date fields */}
+              <div className={styles.snapRow} style={{ marginBottom: 12 }}>
+                <div className={styles.snapField}>
+                  <label className={styles.snapLabel}>RECHNUNGSDATUM</label>
+                  <input
+                    type="date"
+                    className={styles.snapInput}
+                    value={issuedAtInput}
+                    onChange={(e) => setIssuedAtInput(e.target.value)}
+                  />
+                </div>
+                <div className={styles.snapField}>
+                  <label className={styles.snapLabel}>FÄLLIG BIS</label>
+                  <input
+                    type="date"
+                    className={styles.snapInput}
+                    value={dueAtInput}
+                    onChange={(e) => setDueAtInput(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* Items editor */}
+              <table className={styles.itemsTable} style={{ marginBottom: 8 }}>
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: "left" }}>BEZEICHNUNG</th>
+                    <th style={{ textAlign: "center", width: 64 }}>MENGE</th>
+                    <th style={{ textAlign: "right", width: 120 }}>EINZELPREIS</th>
+                    <th style={{ width: 32 }} />
+                  </tr>
+                </thead>
+                <tbody>
+                  {itemsForm.map((item, i) => (
+                    <tr key={i}>
+                      <td>
+                        <input
+                          className={styles.snapInput}
+                          style={{ width: "100%" }}
+                          value={item.title}
+                          onChange={(e) => updateItem(i, "title", e.target.value)}
+                          placeholder="Leistungsbeschreibung"
+                          required
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          min={0}
+                          step={1}
+                          className={styles.snapInput}
+                          style={{ width: 56, textAlign: "center" }}
+                          value={item.qty}
+                          onChange={(e) => updateItem(i, "qty", e.target.value)}
+                          required
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          min={0}
+                          step={0.01}
+                          className={styles.snapInput}
+                          style={{ width: 110, textAlign: "right" }}
+                          value={item.unitPrice}
+                          onChange={(e) => updateItem(i, "unitPrice", e.target.value)}
+                          required
+                        />
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        <button
+                          type="button"
+                          className={styles.btnCancel}
+                          style={{ padding: "2px 8px", fontSize: 13 }}
+                          onClick={() => removeItem(i)}
+                          title="Position entfernen"
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <button
+                type="button"
+                className={styles.btnEditSnap}
+                style={{ marginBottom: 12 }}
+                onClick={addItem}
+              >
+                + Position hinzufügen
+              </button>
+
+              <div className={styles.snapActions}>
+                <button type="button" className={styles.btnCancel} onClick={() => setEditingItems(false)}>Abbrechen</button>
+                <button type="submit" className={styles.btnSave} disabled={itemsSaving || itemsForm.length === 0}>
+                  {itemsSaving ? "Speichern…" : "Speichern"}
+                </button>
+              </div>
+            </form>
+          )}
 
           {/* Totals */}
           <div className={styles.totals}>

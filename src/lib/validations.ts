@@ -191,7 +191,7 @@ export type ExpenseUpdateInput = z.infer<typeof ExpenseUpdateSchema>;
 // INVOICE ITEMS
 // ─────────────────────────────────────────────
 
-const InvoiceItemSchema = z.object({
+export const InvoiceItemSchema = z.object({
   title: nonEmptyString,
   lines: z.array(z.string().trim()).optional(),
   qty: z.coerce.number().min(0).default(1),

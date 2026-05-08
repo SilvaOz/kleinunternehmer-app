@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { getOwnerIdFromCookies } from "@/lib/auth";
-import { InvoiceDraftUpdateSchema, ClientSnapshotSchema } from "@/lib/validations";
+import { InvoiceDraftUpdateSchema, ClientSnapshotSchema, InvoiceItemSchema } from "@/lib/validations";
+import { z } from "zod";
 import Invoice from "@/models/Invoice";
 
 // ─────────────────────────────────────────────
@@ -253,6 +254,38 @@ export async function PATCH(
         );
       }
       update.invoiceNumber = num;
+    }
+
+    if (raw.items !== undefined) {
+      const parsed = z.array(InvoiceItemSchema).min(1).safeParse(raw.items);
+      if (!parsed.success) {
+        return NextResponse.json(
+          { success: false, error: "Ungültige Positionen", details: parsed.error.flatten() },
+          { status: 400 }
+        );
+      }
+      update.items = parsed.data;
+      const subtotal = Math.round(
+        parsed.data.reduce((sum, item) => sum + item.qty * item.unitPrice, 0) * 100
+      ) / 100;
+      update.subtotal = subtotal;
+      update.total = subtotal;
+    }
+
+    if (raw.dueAt !== undefined) {
+      const d = new Date(raw.dueAt);
+      if (isNaN(d.getTime())) {
+        return NextResponse.json({ success: false, error: "Ungültiges Fälligkeitsdatum" }, { status: 400 });
+      }
+      update.dueAt = d;
+    }
+
+    if (raw.issuedAt !== undefined) {
+      const d = new Date(raw.issuedAt);
+      if (isNaN(d.getTime())) {
+        return NextResponse.json({ success: false, error: "Ungültiges Rechnungsdatum" }, { status: 400 });
+      }
+      update.issuedAt = d;
     }
 
     if (Object.keys(update).length === 0) {
