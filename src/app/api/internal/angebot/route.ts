@@ -190,10 +190,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const clientSnapshot: IClientSnapshot = {
       contactName: client.contactName,
       companyName: client.companyName,
-      street:      client.street,
-      zip:         client.zip,
-      city:        client.city,
-      country:     client.country,
+      street:      client.street ?? "",
+      zip:         client.zip ?? "",
+      city:        client.city ?? "",
+      country:     client.country ?? "",
       email:       client.email,
       phone:       client.phone,
     };

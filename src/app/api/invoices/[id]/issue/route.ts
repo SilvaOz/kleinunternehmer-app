@@ -94,10 +94,10 @@ export async function POST(
       clientSnapshot = {
         companyName: client.companyName,
         contactName: client.contactName,
-        street:      client.street,
-        zip:         client.zip,
-        city:        client.city,
-        country:     client.country,
+        street:      client.street ?? "",
+        zip:         client.zip ?? "",
+        city:        client.city ?? "",
+        country:     client.country ?? "",
         email:       client.email,
         phone:       client.phone,
       };
