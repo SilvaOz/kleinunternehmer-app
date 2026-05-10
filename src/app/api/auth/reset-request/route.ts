@@ -32,14 +32,14 @@ export async function POST(req: NextRequest) {
     // Send email if Resend API key is configured
     const resendKey = process.env.RESEND_API_KEY;
     if (resendKey) {
-      await fetch("https://api.resend.com/emails", {
+      const emailRes = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${resendKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: process.env.RESEND_FROM ?? "InvoiceOS <noreply@invoiceos.app>",
+          from: process.env.RESEND_FROM ?? "InvoiceOS <info@devos-web.de>",
           to: user.email,
           subject: "Passwort zurücksetzen – InvoiceOS",
           html: `
@@ -61,6 +61,10 @@ export async function POST(req: NextRequest) {
           `,
         }),
       });
+      if (!emailRes.ok) {
+        const errBody = await emailRes.text();
+        console.error("[reset-request] Resend error:", emailRes.status, errBody);
+      }
     } else {
       // Development fallback: log to console
       console.log("\n[DEV] Password reset link:", resetUrl, "\n");
