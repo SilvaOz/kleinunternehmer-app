@@ -195,6 +195,20 @@ export default function InvoiceDetailPage() {
     }
   }
 
+  async function handleHardDelete() {
+    const num = invoice?.invoiceNumber ?? id;
+    if (!confirm(`Rechnung ${num} permanent löschen?\n\nDiese Aktion kann NICHT rückgängig gemacht werden.\nDie Rechnung wird vollständig aus der Datenbank entfernt.`)) return;
+    setActionLoading("hard-delete");
+    setError(null);
+    const res = await fetch(`/api/invoices/${id}/hard-delete`, { method: "DELETE" }).then((r) => r.json());
+    setActionLoading(null);
+    if (res.success) {
+      router.push("/invoices");
+    } else {
+      setError(res.error ?? "Fehler beim Löschen.");
+    }
+  }
+
   function openItemsEdit() {
     if (!invoice) return;
     setItemsForm(invoice.items.map((it) => ({ ...it, lines: it.lines ?? [] })));
@@ -639,6 +653,15 @@ export default function InvoiceDetailPage() {
                 {actionLoading === "delete" ? "…" : "🗑 Entwurf löschen"}
               </button>
             )}
+            <button
+              className={styles.actionBtnDanger}
+              onClick={handleHardDelete}
+              disabled={!!actionLoading}
+              style={{ opacity: 0.7 }}
+              title="Rechnung permanent aus der Datenbank löschen"
+            >
+              {actionLoading === "hard-delete" ? "…" : "✕ Rechnung löschen"}
+            </button>
           </div>
 
           {/* Timeline */}
